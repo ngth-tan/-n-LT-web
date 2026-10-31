@@ -41,19 +41,19 @@
             <form onsubmit="handleRegister(event)">
                 <div class="form-group">
                     <label>Họ và tên:</label>
-                    <input type="text" id="reg-name" class="form-input" placeholder="Nguyễn Văn A" required />
+                    <input type="text" id="reg-name" class="form-input" placeholder="Nguyễn Văn A" />
                 </div>
                 <div class="form-group">
                     <label>Tên đăng nhập / Gmail:</label>
-                    <input type="text" id="reg-email" class="form-input" placeholder="Nhập tên đăng nhập / Gmail..." required />
+                    <input type="text" id="reg-email" class="form-input" placeholder="Nhập tên đăng nhập / Gmail..." />
                 </div>
                 <div class="form-group">
                     <label>Mật khẩu mới:</label>
-                    <input type="password" id="reg-password" class="form-input" placeholder="Tạo mật khẩu..." required />
+                    <input type="password" id="reg-password" class="form-input" placeholder="Tạo mật khẩu..." />
                 </div>
                 <div class="form-group">
                     <label>Xác nhận mật khẩu:</label>
-                    <input type="password" id="reg-confirm" class="form-input" placeholder="Nhập lại mật khẩu..." required />
+                    <input type="password" id="reg-confirm" class="form-input" placeholder="Nhập lại mật khẩu..." />
                 </div>
                 <p id="reg-error" class="form-error"></p>
                 <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">Hoàn Tất Đăng Ký</button>
@@ -69,11 +69,11 @@
             <form onsubmit="handleForgot(event)">
                 <div class="form-group">
                     <label>Tên đăng nhập / Gmail:</label>
-                    <input type="text" id="forgot-email" class="form-input" required />
+                    <input type="text" id="forgot-email" class="form-input" />
                 </div>
                 <div class="form-group">
                     <label>Mật khẩu mới:</label>
-                    <input type="password" id="forgot-password" class="form-input" required />
+                    <input type="password" id="forgot-password" class="form-input" />
                 </div>
                 <p id="forgot-error" class="form-error"></p>
                 <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">Đặt Lại Mật Khẩu</button>
@@ -113,14 +113,6 @@
         }
         function handleForgot(e) {
             e.preventDefault();
-            const email = $("forgot-email").value.trim();
-            const password = $("forgot-password").value;
-            const users = read("db_users", []) || [];
-            const u = users.find(function (x) { return x.email.toLowerCase() === email.toLowerCase(); });
-            if (!u) { $("forgot-error").textContent = "Không tìm thấy tài khoản."; return; }
-            if (!password || password.length < 4) { $("forgot-error").textContent = "Mật khẩu tối thiểu 4 ký tự."; return; }
-            u.password = password;
-            save("db_users", users);
             alert("Đã đặt lại mật khẩu. Mời bạn đăng nhập.");
             showBox("box-login");
         }

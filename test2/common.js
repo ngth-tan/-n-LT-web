@@ -205,11 +205,7 @@ function nextOrderId() {
 
 const Auth = {
     user: function () { return read("db_users", [])[0]; },
-    register: function (name, email, password, confirm) {
-        if (!String(name || "").trim() || !String(email || "").trim() || !password) return "Vui lòng nhập đầy đủ thông tin.";
-        if (password !== confirm) return "Xác nhận mật khẩu không khớp.";
-        return "";
-    },
+    register: function () { return ""; },
     login: function () { return ""; },
     logout: function () {},
     adminLogin: function () { return ""; },
