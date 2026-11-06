@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tra cứu hóa đơn - LUXURY AUTO</title>
+    <link rel="stylesheet" href="../css/styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+    <div id="site-header"></div>
+    <main class="container">
+        <h2 class="section-title">Tra Cứu Hóa Đơn Điện Tử</h2>
+        <div class="search-filter-bar" style="max-width: 650px; margin: 0 auto 20px auto;">
+            <input type="text" id="invoice-search-id" placeholder="Nhập mã đơn hàng (VD: ORD-1001)..." class="search-input" />
+            <button class="btn" type="button" onclick="lookupInvoice()"><i class="fa-solid fa-magnifying-glass"></i> Tra Cứu</button>
+        </div>
+        <div id="invoice-result" class="invoice-box" style="display: none;"></div>
+    </main>
+    <div id="site-footer"></div>
+    <script src="../js/common.js"></script>
+    <script>
+        function lookupInvoice() {
+            const input = document.getElementById("invoice-search-id");
+            const q = input.value.trim().toUpperCase();
+            const res = document.getElementById("invoice-result");
+            if (!q) { res.style.display = "none"; res.innerHTML = ""; return; }
+            const orders = read("db_orders", []) || [];
+            const exact = orders.filter(function (o) { return o.id === q; });
+            const matches = exact.length ? exact : orders.filter(function (o) { return o.id.indexOf(q) !== -1; });
+            res.style.display = "block";
+            if (!matches.length) {
+                res.innerHTML = '<p style="color:#b91c1c;text-align:center;font-weight:600;">Không tìm thấy hóa đơn "' + q + '". Hệ thống demo chỉ có các hóa đơn ORD-1001, ORD-1002, ORD-1003.</p>';
+                return;
+            }
+            let html = matches.length > 1 ? '<p style="margin-bottom:15px;color:#475569;">Tìm thấy <strong>' + matches.length + '</strong> hóa đơn khớp với "' + q + '":</p>' : "";
+            html += matches.map(function (o, n) {
+                return '<div style="' + (n ? "margin-top:30px;padding-top:25px;border-top:2px dashed #cbd5e1;" : "") + '">' + invoiceHtml(o) + "</div>";
+            }).join("");
+            res.innerHTML = html;
+        }
+
+        window.onload = function () {
+            mountChrome();
+            const preset = new URLSearchParams(location.search).get("invoice");
+            const input = document.getElementById("invoice-search-id");
+            input.addEventListener("keydown", function (e) {
+                if (e.key === "Enter") { e.preventDefault(); lookupInvoice(); }
+            });
+            if (preset) {
+                input.value = preset;
+                lookupInvoice();
+            }
+        };
+    </script>
+</body>
+</html>
