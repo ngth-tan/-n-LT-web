@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tra cứu hóa đơn - LUXURY AUTO</title>
+    <link rel="stylesheet" href="../css/styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+    <div id="site-header"></div>
+    <main class="container">
+        <h2 class="section-title">Hóa Đơn Điện Tử</h2>
+        <div id="invoice-result" class="invoice-box" style="display: none;"></div>
+    </main>
+    <div id="site-footer"></div>
+    <script src="../js/common.js?v=14"></script>
+    <script>
+        function showInvoice(id) {
+            const q = String(id || "").trim().toUpperCase();
+            const res = document.getElementById("invoice-result");
+            if (!q) { res.style.display = "none"; res.innerHTML = ""; return; }
+            const order = findOrder(q);
+            res.style.display = "block";
+            res.innerHTML = invoiceHtml(order);
+        }
+
+        window.onload = function () {
+            mountChrome();
+            showInvoice(new URLSearchParams(location.search).get("invoice"));
+        };
+    </script>
+</body>
+</html>
