@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đăng Nhập - LUXURY AUTO</title>
+    <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body style="background-color: var(--bg-light);">
+    <header>
+        <div class="logo"><a href="../index.html">LUXURY <span>AUTO</span></a></div>
+    </header>
+
+    <main class="container" style="max-width: 450px; margin-top: 60px;">
+
+        <div class="checkout-box" id="box-login">
+            <h2 class="section-title" style="font-size: 22px; margin-bottom: 20px;">Đăng Nhập Khách Hàng</h2>
+            <form onsubmit="handleLogin(event)" novalidate>
+                <div class="form-group">
+                    <label>Tên đăng nhập / Gmail:</label>
+                    <input type="text" id="login-email" class="form-input" placeholder="Nhập tên đăng nhập / Gmail..." />
+                </div>
+                <div class="form-group">
+                    <label>Mật khẩu:</label>
+                    <input type="password" id="login-password" class="form-input" placeholder="Nhập mật khẩu..." />
+                </div>
+                <p id="login-error" class="form-error"></p>
+                <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">Đăng Nhập & Về Trang Chủ</button>
+            </form>
+            <div style="display: flex; justify-content: space-between; margin-top: 15px; font-size: 13px;">
+                <a href="forgot.html" style="color: var(--primary-color);">Quên mật khẩu?</a>
+                <a href="register.html" style="color: var(--primary-color); font-weight: 600;">Chưa có tài khoản? Đăng ký</a>
+            </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="../index.html" style="color: var(--primary-color); font-size: 13px; text-decoration: none;">← Quay lại trang chủ</a>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/common.js?v=13"></script>
+    <script>
+        function nextUrl() {
+            const next = new URLSearchParams(location.search).get("next");
+            const map = { home: "index.html", products: "products.html", cart: "cart.html", orders: "orders.html", invoice: "invoice.html" };
+            if (!next) return pageHref("index.html");
+            if (map[next]) return pageHref(map[next]);
+            if (/\.html$/.test(next)) return pageHref(next);
+            return pageHref("index.html");
+        }
+        function handleLogin(e) {
+            e.preventDefault();
+            const err = Auth.login($("login-email").value, $("login-password").value);
+            $("login-error").textContent = err;
+            if (!err) location.href = nextUrl();
+        }
+    </script>
+</body>
+</html>
