@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="vi">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>LUXURY AUTO - Showroom Phương Tiện & Siêu Xe Độc Bản</title>
+		<link rel="stylesheet" href="css/styles.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+	</head>
+	<body>
+		<div id="site-header"></div>
+		<section class="hero">
+			<div class="hero-content">
+				<h1>Đẳng Cấp <span>Tốc Độ</span> & Sang Trọng</h1>
+				<p>
+					Hệ thống phân phối siêu xe, mô tô địa hình và phương tiện độc bản hàng
+					đầu.
+				</p>
+				<a href="pages/products.html" class="btn"
+					><i class="fa-solid fa-compass"></i> Tìm hiểu thêm</a
+				>
+			</div>
+		</section>
+		<main class="container">
+			<h2 class="section-title">Top sản phẩm bán chạy</h2>
+			<!-- <form
+				class="home-search"
+				onsubmit="
+					location.href = 'index.html';
+					return false;
+				">
+				<input
+					type="text"
+					class="home-search-input"
+					placeholder="Tên xe"
+					aria-label="Tên xe" />
+				 <button type="submit" class="btn home-search-btn">Tìm</button>
+			</form> -->
+			<div class="car-grid" id="home-product-grid"></div>
+		</main>
+		<div id="site-footer"></div>
+		<script src="js/common.js?v=13"></script>
+		<script>
+			(function () {
+				const params = new URLSearchParams(location.search);
+				const invoiceId = params.get("invoice");
+				if (invoiceId) {
+					location.replace(invoiceHref(invoiceId));
+					return;
+				}
+				const product = /^#product-(\d+)$/.exec(location.hash);
+				if (product) {
+					location.replace(detailHref(product[1]));
+					return;
+				}
+				const nextMap = {
+					products: "products.html",
+					cart: "cart.html",
+					orders: "orders.html",
+					invoice: "invoice.html",
+				};
+				if (nextMap[params.get("next")]) {
+					location.replace(pageHref(nextMap[params.get("next")]));
+					return;
+				}
+				mountChrome();
+				renderHomeProducts();
+			})();
+
+			function renderHomeProducts() {
+				const grid = document.getElementById("home-product-grid");
+				const products = visibleProducts();
+				if (!products.length) {
+					grid.innerHTML =
+						'<p style="grid-column:1/-1;text-align:center;color:#64748b;">Chưa có sản phẩm.</p>';
+					return;
+				}
+				products.forEach(function (p) {
+					const sold = p.isSold ? '<span class="sold-badge">Đã bán</span>' : "";
+					const buyBtn = p.isSold
+						? '<button class="card-btn" disabled>Đã bán</button>'
+						: '<button class="card-btn card-btn-buy" onclick="addToCart(' +
+							p.id +
+							')"><i class="fa-solid fa-cart-shopping"></i> Mua</button>';
+					grid.innerHTML +=
+						'<div class="car-card">' +
+						'<a href="' +
+						detailHref(p.id) +
+						'"><img src="' +
+						p.img +
+						'" alt="' +
+						p.name +
+						'" class="car-img" /></a>' +
+						'<div class="car-info">' +
+						'<h3 class="car-title"><a href="' +
+						detailHref(p.id) +
+						'">' +
+						p.name +
+						"</a> " +
+						sold +
+						"</h3>" +
+						'<div class="car-category">' +
+						p.category +
+						"</div>" +
+						'<div class="car-price">' +
+						formatVND(p.price) +
+						"</div>" +
+						'<div class="car-qty">' +
+						productQtyLabel(p) +
+						"</div>" +
+						'<p style="font-size:13px; color:#64748b; margin-bottom:15px;">' +
+						p.desc +
+						"</p>" +
+						// Chi tiết
+						// '<div class="card-actions">' +
+						// '<a class="card-btn" href="' +
+						// detailHref(p.id) +
+						// '"><i class="fa-solid fa-eye"></i> Chi Tiết</a>' +
+						// buyBtn +
+						"</div></div></div>";
+				});
+			}
+		</script>
+	</body>
+</html>
