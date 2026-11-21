@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="vi">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Giỏ hàng - LUXURY AUTO</title>
+		<link rel="stylesheet" href="../css/styles.css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+	</head>
+	<body>
+		<div id="site-header"></div>
+		<main class="container">
+			<h2 class="section-title">Giỏ Hàng &amp; Thanh Toán Trực Tuyến</h2>
+			<div class="checkout-wrapper">
+				<div class="cart-box">
+					<h3><i class="fa-solid fa-basket-shopping"></i> Sản Phẩm Đã Chọn</h3>
+					<div id="cart-items-list" style="margin-top: 15px"></div>
+					<div style="margin-top: 25px; font-weight: bold; font-size: 18px; color: var(--primary-color); border-top: 2px solid #e2e8f0; padding-top: 15px;">
+						Tổng thanh toán: <span id="cart-total-price" style="color: #b48a18">0 VNĐ</span>
+					</div>
+				</div>
+				<div class="checkout-box">
+					<h3><i class="fa-solid fa-file-invoice-dollar"></i> Thông Tin Thanh Toán</h3>
+					<form action="../hoa-don/ORD-1002.html" onsubmit="return backToCart(event);" novalidate>
+						<div class="form-group">
+							<label>Tài khoản người đặt:</label>
+							<input type="text" id="checkout-user" disabled class="form-input" />
+						</div>
+						<div class="form-group">
+							<label>Chọn địa chỉ giao hàng:</label>
+							<select id="checkout-address-select" class="form-input" onchange="toggleCustomAddress(this.value)"></select>
+						</div>
+						<div id="custom-address-group" style="display: none">
+							<div class="form-group">
+								<label>Địa chỉ mới (số nhà, đường):</label>
+								<input type="text" id="checkout-custom-address" class="form-input" placeholder="Số nhà, tên đường..." />
+							</div>
+							<div class="form-group">
+								<label>Tỉnh / Thành phố:</label>
+								<select id="checkout-province" class="form-input"></select>
+							</div>
+							<div class="form-group">
+								<label>Xã / Phường:</label>
+								<select id="checkout-district" class="form-input"></select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label>Hình thức chi trả:</label>
+							<div style="display: flex; gap: 20px; margin-top: 8px">
+								<label><input type="radio" name="pay-method" value="Tiền mặt" checked /> Tiền mặt</label>
+								<label><input type="radio" name="pay-method" value="Trực tuyến" /> Trực tuyến</label>
+							</div>
+						</div>
+						<button type="button" class="btn" style="width: 100%; margin-top: 15px" onclick="return backToCart(event);">
+							<i class="fa-solid fa-check-to-slot"></i> Xác Nhận Đặt Hàng
+						</button>
+					</form>
+				</div>
+			</div>
+		</main>
+		<div id="site-footer"></div>
+		<script src="../js/vietnam-admin.js"></script>
+		<script src="../js/common.js?v=21"></script>
+		<script>
+			function fillCheckoutUser() {
+				const users = read("db_users", []) || [];
+				const u = Auth.user() || users[0] || { name: "Nguyễn Văn A", email: "anguyen@gmail.com" };
+				document.getElementById("checkout-user").value = u.name + " (" + u.email + ")";
+				const select = document.getElementById("checkout-address-select");
+				const addresses = [
+					"123 Lê Văn Sỹ, Phường 14, Quận 3, TP. Hồ Chí Minh",
+					"45 Nguyễn Huệ, Phường Bến Nghé, Quận 1, TP. Hồ Chí Minh",
+					"88 Trần Hưng Đạo, Phường 7, Quận 5, TP. Hồ Chí Minh",
+				];
+				select.innerHTML = "";
+				addresses.forEach(function (addr) {
+					select.innerHTML += '<option value="' + addr.replace(/"/g, "&quot;") + '">' + addr + "</option>";
+				});
+				select.innerHTML += '<option value="NEW">+ Nhập địa chỉ giao hàng mới...</option>';
+				select.value = addresses[0];
+				document.getElementById("custom-address-group").style.display = "none";
+			}
+
+			var FIXED_CART = [{ name: "Ford Ranger Wildtrak 2.0L", price: 973000000, qty: 1 }];
+
+			function renderCart() {
+				const listEl = document.getElementById("cart-items-list");
+				const totalEl = document.getElementById("cart-total-price");
+				const countEl = document.getElementById("cart-count");
+				listEl.innerHTML = "";
+				let total = 0;
+				FIXED_CART.forEach(function (item) {
+					const subtotal = item.price * item.qty;
+					total += subtotal;
+					listEl.innerHTML +=
+						'<div class="cart-line">' +
+						"<div><strong>" + item.name + "</strong><br/><small>" + formatVND(item.price) + " x " + item.qty + "</small></div>" +
+						'<div><span class="cart-sub">' + formatVND(subtotal) + "</span>" +
+						'<button type="button" class="btn-remove" onclick="return fakeRemoveProduct(event)"><i class="fa-solid fa-trash"></i></button></div></div>';
+				});
+				totalEl.innerText = formatVND(total);
+				if (countEl) countEl.innerText = "1";
+			}
+
+			function backToCart(e) {
+				if (e && e.preventDefault) e.preventDefault();
+				showLuxuryBanner(
+					"Đặt Hàng Thành Công",
+					"Đơn hàng của quý khách đã được ghi nhận. Nhấn xem chi tiết hóa đơn để kiểm tra thông tin đơn hàng.",
+					{
+						type: "success",
+						btnText: "Xem chi tiết đơn hàng",
+						onConfirm: function () {
+							location.href = "../hoa-don/ORD-1002.html";
+						},
+					}
+				);
+				return false;
+			}
+
+			function fakeRemoveProduct(e) {
+				if (e && e.preventDefault) e.preventDefault();
+				showLuxuryBanner(
+					"Đã Xóa Sản Phẩm",
+					"Sản phẩm đã được gỡ khỏi danh sách giỏ hàng.",
+					{ type: "warning", btnText: "Đóng" }
+				);
+				renderCart();
+				return false;
+			}
+
+			function removeFromCart() { return fakeRemoveProduct(); }
+			function toggleCustomAddress(val) { document.getElementById("custom-address-group").style.display = val === "NEW" ? "block" : "none"; }
+			function handleCheckout(e) { return backToCart(e); }
+
+			window.onload = function () {
+				mountChrome();
+				initProvinceAndDistrictSelectors("checkout-province", "checkout-district");
+				fillCheckoutUser();
+				renderCart();
+			};
+		</script>
+	</body>
+</html>

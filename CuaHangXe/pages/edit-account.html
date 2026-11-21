@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="vi">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Chỉnh Sửa Thông Tin Cá Nhân - LUXURY AUTO</title>
+		<link rel="stylesheet" href="../css/styles.css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+		<style>
+			.edit-wrapper { max-width: 920px; margin: 50px auto; padding: 0 20px; }
+			.edit-card { display: grid; grid-template-columns: 300px 1fr; background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 12px 35px rgba(15, 23, 42, 0.08); border: 1px solid #e2e8f0; }
+			.edit-aside { background: linear-gradient(160deg, #0f172a 0%, #1e293b 100%); color: #f8fafc; padding: 36px 28px; display: flex; flex-direction: column; align-items: center; text-align: center; justify-content: space-between; }
+			.edit-avatar-box { position: relative; width: 124px; height: 124px; margin-bottom: 16px; }
+			.edit-avatar-box img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-color); padding: 3px; background: #0f172a; }
+			.edit-avatar-upload { position: absolute; right: 4px; bottom: 4px; width: 34px; height: 34px; border-radius: 50%; background: var(--accent-color); color: var(--primary-color); display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35); font-size: 14px; transition: transform 0.2s; }
+			.edit-avatar-upload:hover { transform: scale(1.08); }
+			.edit-aside h3 { font-size: 20px; font-weight: 700; color: #ffffff; margin-bottom: 4px; }
+			.edit-aside .tier { font-size: 13px; color: var(--accent-color); font-weight: 600; margin-bottom: 18px; }
+			.edit-aside .note { font-size: 12.5px; color: #cbd5e1; line-height: 1.6; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; padding: 14px; text-align: left; width: 100%; }
+			.edit-aside .note i { color: var(--accent-color); margin-right: 6px; }
+			.edit-form-area { padding: 38px 40px; }
+			.edit-form-header { margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid #e2e8f0; }
+			.edit-form-header h2 { font-size: 22px; color: var(--primary-color); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+			.edit-form-header span { font-size: 13px; color: #64748b; }
+			.edit-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+			.edit-input-wrap { position: relative; }
+			.edit-input-wrap i.left-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 14px; }
+			.edit-input-wrap .form-input { padding-left: 40px; height: 46px; border-radius: 8px; }
+			.edit-actions { display: flex; align-items: center; justify-content: flex-end; gap: 12px; margin-top: 26px; padding-top: 20px; border-top: 1px solid #f1f5f9; }
+			.edit-btn-cancel { padding: 11px 20px; background: #ffffff; color: var(--primary-color); font-weight: 600; font-size: 13.5px; border: 1px solid #cbd5e1; border-radius: 8px; text-decoration: none; transition: var(--transition); }
+			.edit-btn-cancel:hover { background: #f8fafc; border-color: #94a3b8; }
+			.edit-btn-save { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; background: linear-gradient(135deg, #e5c158, #d4af37); color: var(--primary-color); font-weight: 700; font-size: 13.5px; border: none; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 12px rgba(212, 175, 55, 0.35); transition: var(--transition); text-transform: uppercase; }
+			.edit-btn-save:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(212, 175, 55, 0.45); }
+			@media (max-width: 768px) {
+				.edit-card, .edit-grid-2 { grid-template-columns: 1fr; }
+				.edit-form-area { padding: 28px 22px; }
+				.edit-actions { flex-direction: column-reverse; align-items: stretch; text-align: center; }
+			}
+		</style>
+	</head>
+	<body>
+		<div id="site-header"></div>
+
+		<main class="edit-wrapper">
+			<div class="edit-card">
+				<aside class="edit-aside">
+					<div style="display: flex; flex-direction: column; align-items: center">
+						<div class="edit-avatar-box">
+							<img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=300&q=80" alt="Nguyễn Văn A" />
+							<label for="avatar-file" class="edit-avatar-upload" title="Đổi ảnh đại diện"><i class="fa-solid fa-camera"></i></label>
+							<input type="file" id="avatar-file" accept="image/*" style="display: none" />
+						</div>
+						<h3>Nguyễn Văn A</h3>
+						<p class="tier">Khách hàng thân thiết • #101</p>
+					</div>
+					<div class="note">
+						<p style="margin-bottom: 8px"><i class="fa-solid fa-circle-info"></i><strong>Lưu ý cập nhật:</strong></p>
+						<p>Thông tin số điện thoại và địa chỉ chính xác giúp LUXURY AUTO giao xe và xuất hóa đơn điện tử nhanh chóng hơn.</p>
+					</div>
+				</aside>
+
+				<section class="edit-form-area">
+					<div class="edit-form-header">
+						<h2>Chỉnh Sửa Thông Tin Cá Nhân</h2>
+						<span>Cập nhật hồ sơ khách hàng #101</span>
+					</div>
+
+					<form onsubmit="handleEditAccount(event)" novalidate>
+						<div class="edit-grid-2">
+							<div class="form-group">
+								<label for="edit-name">Họ và tên</label>
+								<div class="edit-input-wrap">
+									<i class="fa-solid fa-user left-icon"></i>
+									<input type="text" id="edit-name" class="form-input" value="Nguyễn Văn A" placeholder="Nhập họ và tên..." />
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="edit-phone">Số điện thoại</label>
+								<div class="edit-input-wrap">
+									<i class="fa-solid fa-phone left-icon"></i>
+									<input type="tel" id="edit-phone" class="form-input" value="0901234567" placeholder="Nhập số điện thoại..." />
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="edit-email">Email</label>
+							<div class="edit-input-wrap">
+								<i class="fa-solid fa-envelope left-icon"></i>
+								<input type="email" id="edit-email" class="form-input" value="anguyen@gmail.com" placeholder="Nhập địa chỉ email..." />
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="edit-address">Địa chỉ giao hàng mặc định</label>
+							<div class="edit-input-wrap">
+								<i class="fa-solid fa-location-dot left-icon"></i>
+								<input type="text" id="edit-address" class="form-input" value="123 Lê Văn Sỹ, Phường 14, Quận 3, TP. Hồ Chí Minh" placeholder="Nhập địa chỉ..." />
+							</div>
+						</div>
+						<div class="edit-actions">
+							<a href="account.html" class="edit-btn-cancel"><i class="fa-solid fa-arrow-left"></i> Quay lại tài khoản</a>
+							<button type="submit" class="edit-btn-save"><i class="fa-solid fa-floppy-disk"></i> Lưu Thay Đổi</button>
+						</div>
+					</form>
+				</section>
+			</div>
+		</main>
+
+		<div id="site-footer"></div>
+
+		<script src="../js/common.js?v=15"></script>
+		<script>
+			window.onload = function () { mountChrome(); };
+			function handleEditAccount(e) {
+				e.preventDefault();
+				showLuxuryBanner(
+					"Lưu Thông Tin Thành Công",
+					"Hồ sơ cá nhân của quý khách đã được cập nhật.",
+					{
+						type: "success",
+						btnText: "Về tài khoản",
+						onConfirm: function () { location.href = "account.html"; },
+					}
+				);
+			}
+		</script>
+	</body>
+</html>

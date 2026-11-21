@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="vi">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>LUXURY AUTO - Showroom Phương Tiện &amp; Siêu Xe Độc Bản</title>
+		<link rel="stylesheet" href="css/styles.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+	</head>
+	<body>
+		<div id="site-header"></div>
+
+		<!-- Hero Banner Slider -->
+		<section class="hero-slider" id="hero-slider">
+			<div
+				class="hero-slide active"
+				style="
+					background-image: url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1920&q=80');
+				">
+				<div class="hero-slide-inner">
+					<div class="hero-badge">
+						<i class="fa-solid fa-crown"></i> Bộ Sưu Tập 2026
+					</div>
+					<h1>Đẳng Cấp <span>Tốc Độ</span> &amp; Sang Trọng</h1>
+					<p>
+						Hệ thống phân phối siêu xe, mô tô địa hình và phương tiện độc bản
+						hàng đầu tại Việt Nam.
+					</p>
+					<a href="pages/products.html" class="btn"
+						><i class="fa-solid fa-compass"></i> Tìm Hiểu Thêm</a
+					>
+				</div>
+			</div>
+
+			<div
+				class="hero-slide"
+				style="
+					background-image: url('https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1920&q=80');
+				">
+				<div class="hero-slide-inner">
+					<div class="hero-badge">
+						<i class="fa-solid fa-bolt"></i> Siêu Xe Độc Bản
+					</div>
+					<h1>Velocity GT <span>Roadster</span> V8</h1>
+					<p>
+						Động cơ V8 Bi-Turbo 4.0L công suất 650 mã lực, thiết kế khí động học
+						chuẩn đường đua.
+					</p>
+					<a href="pages/products.html" class="btn"
+						><i class="fa-solid fa-compass"></i> Tìm Hiểu Thêm</a
+					>
+				</div>
+			</div>
+
+			<div
+				class="hero-slide"
+				style="
+					background-image: url('https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=1920&q=80');
+				">
+				<div class="hero-slide-inner">
+					<div class="hero-badge">
+						<i class="fa-solid fa-mountain"></i> Chinh Phục Địa Hình
+					</div>
+					<h1>Bán Tải &amp; <span>SUV</span> Hạng Sang</h1>
+					<p>
+						Ford Ranger Wildtrak, Raptor cùng Jeep Wrangler Rubicon sẵn sàng cho
+						mọi cung đường khắc nghiệt.
+					</p>
+					<a href="pages/products.html" class="btn"
+						><i class="fa-solid fa-compass"></i> Tìm Hiểu Thêm</a
+					>
+				</div>
+			</div>
+
+			<div
+				class="hero-slide"
+				style="
+					background-image: url('https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=1920&q=80');
+				">
+				<div class="hero-slide-inner">
+					<div class="hero-badge">
+						<i class="fa-solid fa-motorcycle"></i> Moto &amp; Xe Điện
+					</div>
+					<h1>Phong Cách <span>Tự Do</span> Không Giới Hạn</h1>
+					<p>
+						Từ Kawasaki KLX cào cào mạnh mẽ đến VinFast Evo Grand Premia công
+						nghệ pin thế hệ mới.
+					</p>
+					<a href="pages/products.html" class="btn"
+						><i class="fa-solid fa-compass"></i> Tìm Hiểu Thêm</a
+					>
+				</div>
+			</div>
+
+			<button
+				type="button"
+				class="hero-nav-btn prev"
+				aria-label="Slide trước"
+				onclick="moveHeroSlide(-1)">
+				<i class="fa-solid fa-chevron-left"></i>
+			</button>
+			<button
+				type="button"
+				class="hero-nav-btn next"
+				aria-label="Slide tiếp theo"
+				onclick="moveHeroSlide(1)">
+				<i class="fa-solid fa-chevron-right"></i>
+			</button>
+
+			<div class="hero-dots" id="hero-dots"></div>
+		</section>
+
+		<!-- Thanh trượt ngang Top 7 sản phẩm bán chạy -->
+		<main class="container">
+			<div class="carousel-header">
+				<h2 class="section-title">Top Sản Phẩm Bán Chạy</h2>
+				<a href="pages/products.html" class="btn-view-all">
+					Xem tất cả <i class="fa-solid fa-arrow-right"></i>
+				</a>
+			</div>
+
+			<div class="carousel-wrapper">
+				<button
+					type="button"
+					class="carousel-arrow prev"
+					aria-label="Trượt trái"
+					onclick="scrollProductCarousel(-1)">
+					<i class="fa-solid fa-chevron-left"></i>
+				</button>
+
+				<div class="carousel-track" id="home-product-grid"></div>
+
+				<button
+					type="button"
+					class="carousel-arrow next"
+					aria-label="Trượt phải"
+					onclick="scrollProductCarousel(1)">
+					<i class="fa-solid fa-chevron-right"></i>
+				</button>
+			</div>
+		</main>
+
+		<div id="site-footer"></div>
+
+		<script src="js/common.js?v=19"></script>
+		<script>
+			let heroIndex = 0;
+			let heroTimer = null;
+
+			function initHeroSlider() {
+				const slides = document.querySelectorAll("#hero-slider .hero-slide");
+				const dotsWrap = document.getElementById("hero-dots");
+				if (!slides.length || !dotsWrap) return;
+
+				dotsWrap.innerHTML = "";
+				slides.forEach(function (_, idx) {
+					const dot = document.createElement("button");
+					dot.type = "button";
+					dot.className = "hero-dot" + (idx === 0 ? " active" : "");
+					dot.setAttribute("aria-label", "Chuyển đến ảnh " + (idx + 1));
+					dot.onclick = function () {
+						goHeroSlide(idx);
+					};
+					dotsWrap.appendChild(dot);
+				});
+
+				const slider = document.getElementById("hero-slider");
+				slider.addEventListener("mouseenter", stopHeroAuto);
+				slider.addEventListener("mouseleave", startHeroAuto);
+				startHeroAuto();
+			}
+
+			function goHeroSlide(idx) {
+				const slides = document.querySelectorAll("#hero-slider .hero-slide");
+				const dots = document.querySelectorAll("#hero-dots .hero-dot");
+				if (!slides.length) return;
+				heroIndex = (idx + slides.length) % slides.length;
+				slides.forEach(function (s, i) {
+					s.classList.toggle("active", i === heroIndex);
+				});
+				dots.forEach(function (d, i) {
+					d.classList.toggle("active", i === heroIndex);
+				});
+			}
+
+			function moveHeroSlide(step) {
+				goHeroSlide(heroIndex + step);
+			}
+
+			function startHeroAuto() {
+				stopHeroAuto();
+				heroTimer = setInterval(function () {
+					moveHeroSlide(1);
+				}, 4500);
+			}
+
+			function stopHeroAuto() {
+				if (heroTimer) {
+					clearInterval(heroTimer);
+					heroTimer = null;
+				}
+			}
+
+			function scrollProductCarousel(direction) {
+				const track = document.getElementById("home-product-grid");
+				if (!track) return;
+				const card = track.querySelector(".car-card");
+				const step = card ? (card.offsetWidth + 22) * 2 : 560;
+				track.scrollBy({ left: direction * step, behavior: "smooth" });
+			}
+
+			function renderHomeProducts() {
+				const grid = document.getElementById("home-product-grid");
+				const topIds = [3, 4, 5, 6, 15, 14, 13];
+				const all = visibleProducts();
+				const products = topIds
+					.map(function (id) {
+						return all.find(function (p) {
+							return p.id === id;
+						});
+					})
+					.filter(Boolean);
+
+				if (!products.length) {
+					grid.innerHTML =
+						'<p style="width:100%;text-align:center;color:#64748b;">Chưa có sản phẩm.</p>';
+					return;
+				}
+				grid.innerHTML = "";
+				products.forEach(function (p) {
+					const sold = p.isSold ? '<span class="sold-badge">Đã bán</span>' : "";
+					const buyBtn = p.isSold
+						? '<button class="card-btn" disabled>Đã bán</button>'
+						: '<button type="button" class="card-btn" onclick="addToCart(' +
+							p.id +
+							')"><i class="fa-solid fa-cart-shopping"></i> Giỏ hàng</button>';
+
+					grid.innerHTML +=
+						'<div class="car-card">' +
+						'<a href="' +
+						detailHref(p.id) +
+						'"><img src="' +
+						p.img +
+						'" alt="' +
+						p.name +
+						'" class="car-img" /></a>' +
+						'<div class="car-info">' +
+						'<div class="car-category">' +
+						p.category +
+						"</div>" +
+						'<h3 class="car-title"><a href="' +
+						detailHref(p.id) +
+						'">' +
+						p.name +
+						"</a> " +
+						sold +
+						"</h3>" +
+						'<div class="car-price">' +
+						formatVND(p.price) +
+						"</div>" +
+						'<div class="car-qty">' +
+						productQtyLabel(p) +
+						"</div>" +
+						'<div class="card-actions">' +
+						'<a class="card-btn" href="' +
+						detailHref(p.id) +
+						'"><i class="fa-solid fa-eye"></i> Chi tiết</a>' +
+						buyBtn +
+						"</div></div></div>";
+				});
+			}
+
+			(function () {
+				if (typeof mountChrome === "function") mountChrome();
+				initHeroSlider();
+				renderHomeProducts();
+			})();
+		</script>
+	</body>
+</html>

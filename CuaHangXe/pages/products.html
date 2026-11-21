@@ -1,0 +1,719 @@
+<!doctype html>
+<html lang="vi">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Tất Cả Sản Phẩm - LUXURY AUTO</title>
+		<link rel="stylesheet" href="../css/styles.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+		<style>
+			/* ===== TIÊU ĐỀ & DẢI DANH MỤC ICON TRÒN ===== */
+			.catalog-hero {
+				text-align: center;
+				padding: 4px 0 34px;
+			}
+			.catalog-hero h1 {
+				font-size: 32px;
+				font-weight: 800;
+				color: var(--primary-color);
+				letter-spacing: 1.6px;
+				text-transform: uppercase;
+				margin-bottom: 28px;
+			}
+			.catalog-hero h1 span {
+				color: var(--accent-color);
+			}
+
+			.cat-icon-strip {
+				display: flex;
+				justify-content: center;
+				align-items: flex-start;
+				flex-wrap: wrap;
+				gap: 24px;
+			}
+			.cat-pill-btn {
+				text-decoration: none;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: 10px;
+				min-width: 78px;
+				color: #475569;
+				transition: var(--transition);
+			}
+			.cat-pill-circle {
+				width: 64px;
+				height: 64px;
+				border-radius: 50%;
+				background: #ffffff;
+				border: 1.5px solid #cbd5e1;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 21px;
+				color: var(--primary-color);
+				box-shadow: 0 6px 16px rgba(11, 19, 36, 0.06);
+				transition: var(--transition);
+			}
+			.cat-pill-btn span {
+				font-size: 12.5px;
+				font-weight: 600;
+			}
+			.cat-pill-btn:hover .cat-pill-circle {
+				border-color: var(--accent-color);
+				color: var(--accent-color);
+				transform: translateY(-4px);
+				box-shadow: 0 10px 22px rgba(212, 175, 55, 0.22);
+			}
+			.cat-pill-btn.active .cat-pill-circle {
+				background: linear-gradient(135deg, var(--accent-light), var(--accent-color));
+				border-color: var(--accent-color);
+				color: var(--primary-color);
+				box-shadow: 0 10px 24px rgba(212, 175, 55, 0.42);
+				transform: translateY(-4px);
+			}
+			.cat-pill-btn.active span {
+				color: var(--primary-color);
+				font-weight: 700;
+			}
+
+			/* ===== THANH CÔNG CỤ GỌN 2 BÊN (BỘ LỌC | SẮP XẾP) ===== */
+			.catalog-toolbar {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 16px;
+				flex-wrap: wrap;
+				padding: 15px 22px;
+				background: #ffffff;
+				border: 1px solid var(--border-soft);
+				border-radius: 12px;
+				box-shadow: var(--shadow-card);
+				margin-bottom: 30px;
+			}
+			.toolbar-left {
+				display: flex;
+				align-items: center;
+				gap: 16px;
+			}
+			.btn-open-filter {
+				display: inline-flex;
+				align-items: center;
+				gap: 9px;
+				padding: 10px 18px;
+				background: var(--primary-color);
+				color: #f8fafc;
+				border: 1px solid var(--primary-color);
+				border-radius: 8px;
+				font-size: 13.5px;
+				font-weight: 600;
+				cursor: pointer;
+				transition: var(--transition);
+			}
+			.btn-open-filter i {
+				color: var(--accent-color);
+			}
+			.btn-open-filter:hover {
+				background: var(--primary-soft);
+				border-color: var(--accent-color);
+				transform: translateY(-1px);
+			}
+			.toolbar-sort {
+				height: 42px;
+				min-width: 210px;
+				padding: 0 14px;
+				border: 1px solid #cbd5e1;
+				border-radius: 8px;
+				font-size: 13.5px;
+				font-weight: 600;
+				color: var(--primary-color);
+				background: #f8fafc;
+				outline: none;
+				cursor: pointer;
+				transition: var(--transition);
+			}
+			.toolbar-sort:focus {
+				background: #ffffff;
+				border-color: var(--accent-color);
+				box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.16);
+			}
+
+			/* ===== NGĂN KÉO TÌM KIẾM NÂNG CAO (SLIDE-OUT DRAWER) ===== */
+			.drawer-overlay {
+				position: fixed;
+				inset: 0;
+				background: rgba(11, 19, 36, 0.65);
+				backdrop-filter: blur(5px);
+				z-index: 2000;
+				opacity: 0;
+				visibility: hidden;
+				transition: all 0.28s ease;
+			}
+			.drawer-overlay.open {
+				opacity: 1;
+				visibility: visible;
+			}
+
+			.filter-drawer {
+				position: fixed;
+				top: 0;
+				left: 0;
+				bottom: 0;
+				width: 345px;
+				max-width: 90vw;
+				background: linear-gradient(170deg, #0b1324 0%, #15233e 100%);
+				color: #f8fafc;
+				z-index: 2001;
+				display: flex;
+				flex-direction: column;
+				transform: translateX(-100%);
+				transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+				box-shadow: 14px 0 42px rgba(0, 0, 0, 0.48);
+				border-right: 1px solid rgba(212, 175, 55, 0.26);
+			}
+			.filter-drawer.open {
+				transform: translateX(0);
+			}
+
+			.drawer-header {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding: 22px 24px;
+				border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+			}
+			.drawer-header h3 {
+				font-size: 17.5px;
+				font-weight: 700;
+				color: #ffffff;
+				display: flex;
+				align-items: center;
+				gap: 10px;
+				letter-spacing: 0.4px;
+			}
+			.drawer-header h3 i {
+				color: var(--accent-color);
+			}
+			.drawer-close-btn {
+				width: 34px;
+				height: 34px;
+				border-radius: 50%;
+				border: 1px solid rgba(255, 255, 255, 0.16);
+				background: rgba(255, 255, 255, 0.05);
+				color: #cbd5e1;
+				font-size: 16px;
+				cursor: pointer;
+				transition: var(--transition);
+			}
+			.drawer-close-btn:hover {
+				background: var(--accent-color);
+				color: var(--primary-color);
+				border-color: var(--accent-color);
+			}
+
+			.drawer-body {
+				flex: 1;
+				overflow-y: auto;
+				padding: 24px;
+			}
+			.drawer-section {
+				margin-bottom: 24px;
+			}
+			.drawer-label {
+				display: block;
+				font-size: 11.5px;
+				font-weight: 700;
+				letter-spacing: 1.2px;
+				text-transform: uppercase;
+				color: var(--accent-light);
+				margin-bottom: 12px;
+			}
+			.drawer-input {
+				width: 100%;
+				height: 42px;
+				padding: 0 14px;
+				border-radius: 8px;
+				border: 1px solid rgba(255, 255, 255, 0.16);
+				background: rgba(255, 255, 255, 0.06);
+				color: #ffffff;
+				font-size: 13.5px;
+				outline: none;
+				transition: var(--transition);
+			}
+			.drawer-input::placeholder {
+				color: #94a3b8;
+			}
+			.drawer-input:focus {
+				border-color: var(--accent-color);
+				background: rgba(255, 255, 255, 0.1);
+			}
+
+			.drawer-check-list {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				gap: 11px;
+			}
+			.drawer-check-item {
+				display: flex;
+				align-items: center;
+				gap: 9px;
+				font-size: 13.5px;
+				color: #e2e8f0;
+				cursor: pointer;
+				user-select: none;
+			}
+			.drawer-check-item input[type="checkbox"] {
+				width: 16px;
+				height: 16px;
+				accent-color: #d4af37;
+				cursor: pointer;
+			}
+
+			.drawer-price-row {
+				display: flex;
+				align-items: center;
+				gap: 10px;
+			}
+			.drawer-price-row span {
+				color: #94a3b8;
+				font-weight: 700;
+			}
+
+			.drawer-footer {
+				padding: 18px 24px;
+				border-top: 1px solid rgba(255, 255, 255, 0.1);
+				display: flex;
+				flex-direction: column;
+				gap: 10px;
+			}
+			.btn-apply-filter {
+				width: 100%;
+				padding: 13px;
+				border: none;
+				border-radius: 8px;
+				background: linear-gradient(135deg, var(--accent-light), var(--accent-color));
+				color: var(--primary-color);
+				font-size: 13.5px;
+				font-weight: 800;
+				letter-spacing: 0.8px;
+				text-transform: uppercase;
+				cursor: pointer;
+				box-shadow: 0 6px 18px rgba(212, 175, 55, 0.35);
+				transition: var(--transition);
+			}
+			.btn-apply-filter:hover {
+				filter: brightness(1.06);
+				transform: translateY(-1px);
+			}
+			.btn-reset-filter {
+				width: 100%;
+				padding: 10px;
+				border: 1px solid rgba(255, 255, 255, 0.18);
+				border-radius: 8px;
+				background: transparent;
+				color: #cbd5e1;
+				font-size: 13px;
+				font-weight: 600;
+				text-align: center;
+				text-decoration: none;
+				transition: var(--transition);
+			}
+			.btn-reset-filter:hover {
+				background: rgba(255, 255, 255, 0.08);
+				color: #ffffff;
+			}
+
+			@media (max-width: 768px) {
+				.catalog-hero h1 { font-size: 24px; }
+				.catalog-toolbar { flex-direction: column; align-items: stretch; }
+				.toolbar-left { justify-content: space-between; }
+			}
+		</style>
+	</head>
+	<body>
+		<!-- Header có thanh tìm kiếm trỏ sang search-results.html -->
+		<header>
+			<div class="logo">
+				<a href="../index.html"
+					><i class="fa-solid fa-car-rear"></i> LUXURY <span>AUTO</span></a
+				>
+			</div>
+			<form
+				class="header-search-form"
+				action="search-results.html"
+				onsubmit="
+					location.href = 'search-results.html';
+					return false;
+				">
+				<input
+					type="text"
+					id="search-name"
+					placeholder="Tìm kiếm theo tên phương tiện..."
+					aria-label="Tìm kiếm phương tiện" />
+				<button type="submit" title="Tìm kiếm">
+					<i class="fa-solid fa-magnifying-glass"></i>
+				</button>
+			</form>
+			<ul class="nav-right-menu">
+				<li>
+					<a href="../index.html"
+						><i class="fa-solid fa-house"></i> Trang chủ</a
+					>
+				</li>
+				<li>
+					<a href="products.html" class="active"
+						><i class="fa-solid fa-box-archive"></i> Sản phẩm</a
+					>
+				</li>
+				<li>
+					<a href="cart.html"
+						><i class="fa-solid fa-cart-shopping"></i> Giỏ hàng (1)</a
+					>
+				</li>
+				<li class="nav-user-dropdown" id="userDropdown">
+					<button class="nav-user-btn" id="userBtn" type="button">
+						<img
+							src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=100&q=80"
+							alt="Nguyễn Văn A" />
+						<span>NGUYỄN VĂN A</span>
+						<i class="fa-solid fa-caret-down"></i>
+					</button>
+					<div class="dropdown-menu-box">
+						<a href="account.html"
+							><i class="fa-solid fa-user"></i> Thông tin tài khoản</a
+						>
+						<a href="orders.html"
+							><i class="fa-solid fa-calendar-days"></i> Lịch sử mua hàng</a
+						>
+						<a href="change-password.html"
+							><i class="fa-solid fa-lock"></i> Đổi mật khẩu</a
+						>
+						<hr />
+						<a href="logout.html"
+							><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a
+						>
+					</div>
+				</li>
+			</ul>
+		</header>
+
+		<!-- Ngăn kéo Tìm kiếm nâng cao -->
+		<div
+			class="drawer-overlay"
+			id="drawer-overlay"
+			onclick="closeFilterDrawer()"></div>
+		<aside
+			class="filter-drawer"
+			id="filter-drawer"
+			aria-label="Tìm kiếm nâng cao">
+			<div class="drawer-header">
+				<h3><i class="fa-solid fa-sliders"></i> Tìm Kiếm Nâng Cao</h3>
+				<button
+					type="button"
+					class="drawer-close-btn"
+					onclick="closeFilterDrawer()"
+					aria-label="Đóng">
+					<i class="fa-solid fa-xmark"></i>
+				</button>
+			</div>
+
+			<div class="drawer-body">
+				<div class="drawer-section">
+					<label class="drawer-label" for="adv-name">Tên sản phẩm</label>
+					<input
+						type="text"
+						id="adv-name"
+						class="drawer-input"
+						placeholder="Nhập tên xe cần tìm..." />
+				</div>
+
+				<div class="drawer-section">
+					<span class="drawer-label">Phân loại</span>
+					<div class="drawer-check-list">
+						<label class="drawer-check-item"
+							><input type="checkbox" /> <span>Moto</span></label
+						>
+						<label class="drawer-check-item"
+							><input type="checkbox" /> <span>Xe máy điện</span></label
+						>
+						<label class="drawer-check-item"
+							><input type="checkbox" /> <span>Pickup</span></label
+						>
+						<label class="drawer-check-item"
+							><input type="checkbox" /> <span>SUV</span></label
+						>
+						<label class="drawer-check-item"
+							><input type="checkbox" /> <span>Roadster</span></label
+						>
+						<label class="drawer-check-item"
+							><input type="checkbox" /> <span>Hypercar</span></label
+						>
+						<label class="drawer-check-item"
+							><input type="checkbox" /> <span>Sedan</span></label
+						>
+						<label class="drawer-check-item"
+							><input type="checkbox" /> <span>Phụ kiện</span></label
+						>
+					</div>
+				</div>
+
+				<div class="drawer-section">
+					<span class="drawer-label">Hãng xe</span>
+					<div class="drawer-check-list">
+						<label class="drawer-check-item"
+							><input type="checkbox" /> <span>VinFast</span></label
+						>
+						<label class="drawer-check-item"
+							><input type="checkbox" /> <span>Audi</span></label
+						>
+						<label class="drawer-check-item"
+							><input type="checkbox" /> <span>Mercedes</span></label
+						>
+						<label class="drawer-check-item"
+							><input type="checkbox" /> <span>Kawasaki</span></label
+						>
+						<label class="drawer-check-item"
+							><input type="checkbox" /> <span>Ford</span></label
+						>
+						<label class="drawer-check-item"
+							><input type="checkbox" /> <span>Jeep</span></label
+						>
+						<label class="drawer-check-item"
+							><input type="checkbox" /> <span>Yamaha</span></label
+						>
+						<label class="drawer-check-item"
+							><input type="checkbox" /> <span>Honda</span></label
+						>
+					</div>
+				</div>
+
+				<div class="drawer-section">
+					<span class="drawer-label">Khoảng giá (VNĐ)</span>
+					<div class="drawer-price-row">
+						<input
+							type="text"
+							id="adv-price-min"
+							class="drawer-input"
+							placeholder="Từ 0đ" />
+						<span>–</span>
+						<input
+							type="text"
+							id="adv-price-max"
+							class="drawer-input"
+							placeholder="Đến tối đa" />
+					</div>
+				</div>
+			</div>
+
+			<div class="drawer-footer">
+				<button
+					type="button"
+					class="btn-apply-filter"
+					onclick="location.href = 'search-results.html'">
+					<i class="fa-solid fa-magnifying-glass"></i> Xem Kết Quả
+				</button>
+				<a href="products.html" class="btn-reset-filter">
+					<i class="fa-solid fa-rotate-left"></i> Xóa bộ lọc
+				</a>
+			</div>
+		</aside>
+
+		<main class="container">
+			<!-- Tiêu đề + Dải danh mục icon tròn -->
+			<section class="catalog-hero">
+				<h1>Tất Cả <span>Sản Phẩm</span></h1>
+				<div class="cat-icon-strip">
+					<a href="products.html" class="cat-pill-btn active">
+						<div class="cat-pill-circle">
+							<i class="fa-solid fa-border-all"></i>
+						</div>
+						<span>Tất cả</span>
+					</a>
+					<a href="search-results.html" class="cat-pill-btn">
+						<div class="cat-pill-circle">
+							<i class="fa-solid fa-motorcycle"></i>
+						</div>
+						<span>Moto</span>
+					</a>
+					<a href="search-results.html" class="cat-pill-btn">
+						<div class="cat-pill-circle"><i class="fa-solid fa-bolt"></i></div>
+						<span>Xe điện</span>
+					</a>
+					<a href="search-results.html" class="cat-pill-btn">
+						<div class="cat-pill-circle">
+							<i class="fa-solid fa-truck-pickup"></i>
+						</div>
+						<span>Pickup</span>
+					</a>
+					<a href="search-results.html" class="cat-pill-btn">
+						<div class="cat-pill-circle">
+							<i class="fa-solid fa-car-side"></i>
+						</div>
+						<span>SUV</span>
+					</a>
+					<a href="search-results.html" class="cat-pill-btn">
+						<div class="cat-pill-circle">
+							<i class="fa-solid fa-gauge-high"></i>
+						</div>
+						<span>Roadster</span>
+					</a>
+					<a href="search-results.html" class="cat-pill-btn">
+						<div class="cat-pill-circle"><i class="fa-solid fa-fire"></i></div>
+						<span>Hypercar</span>
+					</a>
+					<a href="search-results.html" class="cat-pill-btn">
+						<div class="cat-pill-circle">
+							<i class="fa-solid fa-toolbox"></i>
+						</div>
+						<span>Phụ kiện</span>
+					</a>
+				</div>
+			</section>
+
+			<!-- Thanh công cụ gọn 2 bên: Bộ lọc nâng cao | Sắp xếp -->
+			<div class="catalog-toolbar">
+				<div class="toolbar-left">
+					<button
+						type="button"
+						class="btn-open-filter"
+						onclick="openFilterDrawer()">
+						<i class="fa-solid fa-sliders"></i>
+						<span>Bộ lọc</span>
+					</button>
+				</div>
+
+				<select id="filter-sort" class="toolbar-sort">
+					<option value="newest">Sắp xếp: Mới nhất</option>
+					<option value="price-asc">Giá: Thấp đến cao</option>
+					<option value="price-desc">Giá: Cao đến thấp</option>
+				</select>
+			</div>
+
+			<!-- Danh sách sản phẩm -->
+			<div class="car-grid" id="product-grid"></div>
+
+			<!-- Phân trang tượng trưng -->
+			<div class="pagination" id="pagination-controls"></div>
+		</main>
+
+		<div id="site-footer"></div>
+
+		<script src="../js/common.js?v=19"></script>
+		<script>
+			let currentPage = 1;
+			const TOTAL_PAGE_BUTTONS = 4;
+
+			function openFilterDrawer() {
+				document.getElementById("filter-drawer").classList.add("open");
+				document.getElementById("drawer-overlay").classList.add("open");
+			}
+
+			function closeFilterDrawer() {
+				document.getElementById("filter-drawer").classList.remove("open");
+				document.getElementById("drawer-overlay").classList.remove("open");
+			}
+
+			function renderProducts() {
+				const filtered = visibleProducts();
+				const grid = document.getElementById("product-grid");
+				const paginationEl = document.getElementById("pagination-controls");
+
+				grid.innerHTML = "";
+				paginationEl.innerHTML = "";
+
+				if (filtered.length === 0) {
+					grid.innerHTML =
+						'<p style="grid-column: 1/-1; text-align:center; padding: 20px; color:#64748b;">Không tìm thấy phương tiện hoặc phụ kiện phù hợp.</p>';
+					return;
+				}
+
+				const pageProducts = filtered.slice(0, 6);
+
+				pageProducts.forEach(function (p) {
+					const sold = p.isSold ? '<span class="sold-badge">Đã bán</span>' : "";
+					const buyBtn = p.isSold
+						? '<button class="card-btn" disabled>Đã bán</button>'
+						: '<button class="card-btn card-btn-buy" onclick="addToCart(' +
+							p.id +
+							')"><i class="fa-solid fa-cart-shopping"></i> Thêm vào giỏ</button>';
+
+					grid.innerHTML +=
+						'<div class="car-card">' +
+						'<a href="' +
+						detailHref(p.id) +
+						'"><img src="' +
+						p.img +
+						'" alt="' +
+						p.name +
+						'" class="car-img" /></a>' +
+						'<div class="car-info">' +
+						'<div class="car-category">' +
+						p.category +
+						"</div>" +
+						'<h3 class="car-title"><a href="' +
+						detailHref(p.id) +
+						'">' +
+						p.name +
+						"</a> " +
+						sold +
+						"</h3>" +
+						'<div class="car-price">' +
+						formatVND(p.price) +
+						"</div>" +
+						'<div class="car-qty">' +
+						productQtyLabel(p) +
+						"</div>" +
+						'<div class="card-actions">' +
+						'<a class="card-btn" href="' +
+						detailHref(p.id) +
+						'"><i class="fa-solid fa-eye"></i> Xem chi tiết</a>' +
+						buyBtn +
+						"</div></div></div>";
+				});
+
+				let pagHTML =
+					'<button class="page-btn" onclick="changePage(currentPage - 1)">«</button>';
+				for (let i = 1; i <= TOTAL_PAGE_BUTTONS; i++) {
+					pagHTML +=
+						'<button class="page-btn ' +
+						(i === currentPage ? "active" : "") +
+						'" data-page="' +
+						i +
+						'" onclick="changePage(' +
+						i +
+						')">' +
+						i +
+						"</button>";
+				}
+				pagHTML +=
+					'<button class="page-btn" onclick="changePage(currentPage + 1)">»</button>';
+				paginationEl.innerHTML = pagHTML;
+			}
+
+			function changePage(page) {
+				if (page < 1) page = 1;
+				if (page > TOTAL_PAGE_BUTTONS) page = TOTAL_PAGE_BUTTONS;
+				currentPage = page;
+				document
+					.querySelectorAll(".page-btn[data-page]")
+					.forEach(function (btn) {
+						btn.classList.toggle(
+							"active",
+							Number(btn.dataset.page) === currentPage,
+						);
+					});
+			}
+
+			window.onload = function () {
+				if (typeof mountChrome === "function") mountChrome();
+				if (typeof setupNumberFormatter === "function") {
+					setupNumberFormatter(document.getElementById("adv-price-min"));
+					setupNumberFormatter(document.getElementById("adv-price-max"));
+				}
+				renderProducts();
+			};
+		</script>
+	</body>
+</html>
