@@ -73,7 +73,11 @@
 				box-shadow: 0 10px 22px rgba(212, 175, 55, 0.22);
 			}
 			.cat-pill-btn.active .cat-pill-circle {
-				background: linear-gradient(135deg, var(--accent-light), var(--accent-color));
+				background: linear-gradient(
+					135deg,
+					var(--accent-light),
+					var(--accent-color)
+				);
 				border-color: var(--accent-color);
 				color: var(--primary-color);
 				box-shadow: 0 10px 24px rgba(212, 175, 55, 0.42);
@@ -309,7 +313,11 @@
 				padding: 13px;
 				border: none;
 				border-radius: 8px;
-				background: linear-gradient(135deg, var(--accent-light), var(--accent-color));
+				background: linear-gradient(
+					135deg,
+					var(--accent-light),
+					var(--accent-color)
+				);
 				color: var(--primary-color);
 				font-size: 13.5px;
 				font-weight: 800;
@@ -342,9 +350,16 @@
 			}
 
 			@media (max-width: 768px) {
-				.catalog-hero h1 { font-size: 24px; }
-				.catalog-toolbar { flex-direction: column; align-items: stretch; }
-				.toolbar-left { justify-content: space-between; }
+				.catalog-hero h1 {
+					font-size: 24px;
+				}
+				.catalog-toolbar {
+					flex-direction: column;
+					align-items: stretch;
+				}
+				.toolbar-left {
+					justify-content: space-between;
+				}
 			}
 		</style>
 	</head>
@@ -541,7 +556,8 @@
 			<section class="catalog-hero">
 				<h1>Kết Quả <span>Tìm Kiếm</span></h1>
 				<p class="catalog-sub">
-					Tìm thấy <strong>3 sản phẩm</strong> phù hợp với tiêu chí của quý khách
+					Tìm thấy <strong>3 sản phẩm</strong> phù hợp với tiêu chí của quý
+					khách
 				</p>
 				<div class="cat-icon-strip">
 					<a href="products.html" class="cat-pill-btn">
@@ -601,9 +617,6 @@
 						<i class="fa-solid fa-sliders"></i>
 						<span>Bộ lọc</span>
 					</button>
-					<a href="products.html" class="btn-back-all">
-						<i class="fa-solid fa-arrow-left"></i> Tất cả sản phẩm
-					</a>
 				</div>
 
 				<select id="filter-sort" class="toolbar-sort">
@@ -636,6 +649,64 @@
 				document.getElementById("drawer-overlay").classList.remove("open");
 			}
 
+			// function renderThreeProducts() {
+			// 	const grid = document.getElementById("result-grid");
+			// 	const all = visibleProducts();
+			// 	const fixedIds = [12, 11, 6];
+			// 	let items = fixedIds
+			// 		.map(function (id) {
+			// 			return all.find(function (p) {
+			// 				return p.id === id;
+			// 			});
+			// 		})
+			// 		.filter(Boolean);
+
+			// 	if (items.length < 3) items = all.slice(0, 3);
+
+			// 	grid.innerHTML = "";
+			// 	items.forEach(function (p) {
+			// 		const sold = p.isSold ? '<span class="sold-badge">Đã bán</span>' : "";
+			// 		const buyBtn = p.isSold
+			// 			? '<button class="card-btn" disabled>Đã bán</button>'
+			// 			: '<button type="button" class="card-btn card-btn-buy" onclick="addToCart(' +
+			// 				p.id +
+			// 				')"><i class="fa-solid fa-cart-shopping"></i> Thêm vào giỏ</button>';
+
+			// 		grid.innerHTML +=
+			// 			'<div class="car-card">' +
+			// 			'<a href="' +
+			// 			detailHref(p.id) +
+			// 			'"><img src="' +
+			// 			p.img +
+			// 			'" alt="' +
+			// 			p.name +
+			// 			'" class="car-img" /></a>' +
+			// 			'<div class="car-info">' +
+			// 			'<div class="car-category">' +
+			// 			p.category +
+			// 			"</div>" +
+			// 			'<h3 class="car-title"><a href="' +
+			// 			detailHref(p.id) +
+			// 			'">' +
+			// 			p.name +
+			// 			"</a> " +
+			// 			sold +
+			// 			"</h3>" +
+			// 			'<div class="car-price">' +
+			// 			formatVND(p.price) +
+			// 			"</div>" +
+			// 			'<div class="car-qty">' +
+			// 			productQtyLabel(p) +
+			// 			"</div>" +
+			// 			'<div class="card-actions">' +
+			// 			'<a class="card-btn" href="' +
+			// 			detailHref(p.id) +
+			// 			'"><i class="fa-solid fa-eye"></i> Xem chi tiết</a>' +
+			// 			buyBtn +
+			// 			"</div></div></div>";
+			// 	});
+			// }
+
 			function renderThreeProducts() {
 				const grid = document.getElementById("result-grid");
 				const all = visibleProducts();
@@ -653,6 +724,14 @@
 				grid.innerHTML = "";
 				items.forEach(function (p) {
 					const sold = p.isSold ? '<span class="sold-badge">Đã bán</span>' : "";
+
+					// Làm mờ (disabled) nút Xem chi tiết nếu xe đã bán
+					const detailBtn = p.isSold
+						? '<button class="card-btn" disabled><i class="fa-solid fa-eye"></i> Xem chi tiết</button>'
+						: '<a class="card-btn" href="' +
+							detailHref(p.id) +
+							'"><i class="fa-solid fa-eye"></i> Xem chi tiết</a>';
+
 					const buyBtn = p.isSold
 						? '<button class="card-btn" disabled>Đã bán</button>'
 						: '<button type="button" class="card-btn card-btn-buy" onclick="addToCart(' +
@@ -686,9 +765,7 @@
 						productQtyLabel(p) +
 						"</div>" +
 						'<div class="card-actions">' +
-						'<a class="card-btn" href="' +
-						detailHref(p.id) +
-						'"><i class="fa-solid fa-eye"></i> Xem chi tiết</a>' +
+						detailBtn +
 						buyBtn +
 						"</div></div></div>";
 				});
