@@ -24,8 +24,8 @@
 				<button type="submit" class="btn" style="width: 100%; margin-top: 10px;">Truy Cập Quản Trị</button>
 			</form>
 			<div style="display: flex; justify-content: space-between; margin-top: 15px; font-size: 12px;">
-				<a href="#" onclick="showAdminBox('admin-box-forgot'); return false;" style="color: var(--accent-color); text-decoration: underline;">Quên mật khẩu Admin?</a>
-				<a href="../index-guest.html" style="color: var(--accent-color); text-decoration: none;">← Về trang chủ</a>
+				<a href="#" onclick="showAdminBox('admin-box-forgot'); return false;" style="color: #b48a18; text-decoration: underline;">Quên mật khẩu Admin?</a>
+				<a href="../index-guest.html" style="color: #b48a18; text-decoration: none;">← Về trang chủ</a>
 			</div>
 		</div>
 
@@ -45,10 +45,8 @@
 		</div>
 	</main>
 
-	<script src="../js/common.js?v=15"></script>
+	<script src="../js/common.js?v=22"></script>
 	<script>
-		if (new URLSearchParams(location.search).get("logout") === "1") Auth.adminLogout();
-
 		function showAdminBox(id) {
 			["admin-box-login", "admin-box-forgot"].forEach(function (b) {
 				document.getElementById(b).style.display = b === id ? "block" : "none";
@@ -56,9 +54,7 @@
 		}
 		function handleAdminLogin(e) {
 			e.preventDefault();
-			const err = Auth.adminLogin($("admin-account").value, $("admin-password").value);
-			$("admin-login-error").textContent = err;
-			if (!err) location.href = "admin.html";
+			location.href = "admin.html";
 		}
 		function handleAdminForgot(e) {
 			e.preventDefault();

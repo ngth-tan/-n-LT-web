@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="vi">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Thống Kê Top 5 Khách Hàng - LUXURY ADMIN</title>
+		<link rel="stylesheet" href="../css/styles.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+		<style>
+			.admin-filter-grid {
+				display: grid;
+				grid-template-columns: 1fr 1fr auto;
+				gap: 15px;
+				align-items: end;
+				background: #f8fafc;
+				padding: 18px;
+				border-radius: 10px;
+				border: 1px solid #e2e8f0;
+				margin: 15px 0 24px;
+			}
+			.admin-filter-grid .filter-group {
+				display: flex;
+				flex-direction: column;
+				gap: 6px;
+			}
+			.admin-filter-grid label {
+				font-size: 12.5px;
+				font-weight: 600;
+				color: var(--primary-color);
+			}
+			.admin-filter-grid .search-input {
+				height: 42px;
+				padding: 0 12px;
+			}
+			@media (max-width: 680px) {
+				.admin-filter-grid { grid-template-columns: 1fr; }
+			}
+		</style>
+	</head>
+	<body>
+		<div id="admin-header"></div>
+
+		<main class="container">
+			<h2 class="section-title">Thống Kê Top 5 Khách Hàng Mua Hàng Cao Nhất</h2>
+
+			<div class="cart-box">
+				<h3><i class="fa-solid fa-calendar-days"></i> Chọn Khoảng Thời Gian Thống Kê</h3>
+				<div class="admin-filter-grid">
+					<div class="filter-group">
+						<label for="stat-from">Từ ngày:</label>
+						<input type="date" id="stat-from" class="search-input" value="2026-01-01" />
+					</div>
+					<div class="filter-group">
+						<label for="stat-to">Đến ngày:</label>
+						<input type="date" id="stat-to" class="search-input" value="2026-12-31" />
+					</div>
+					<div class="filter-group">
+						<button
+							type="button"
+							class="btn"
+							style="height: 42px; padding: 0 22px; white-space: nowrap"
+							onclick="showStatNotice()">
+							<i class="fa-solid fa-filter"></i> Xem Thống Kê
+						</button>
+					</div>
+				</div>
+
+				<div class="admin-table-container">
+					<table class="admin-table">
+						<thead>
+							<tr>
+								<th>Hạng</th>
+								<th>Họ Tên Khách Hàng</th>
+								<th>Các Đơn Hàng (Link xem hóa đơn)</th>
+								<th>Tổng Tiền Mua</th>
+							</tr>
+						</thead>
+						<tbody id="admin-stats-tbody"></tbody>
+					</table>
+				</div>
+			</div>
+		</main>
+
+		<div id="admin-footer"></div>
+
+		<script src="../js/common.js?v=22"></script>
+		<script>
+			function showStatNotice() {
+				showLuxuryBanner(
+					"Cập Nhật Thống Kê",
+					"Đã tổng hợp bảng xếp hạng Top 5 khách hàng theo khoảng thời gian đã chọn.",
+					{ type: "info", btnText: "Đóng" }
+				);
+			}
+
+			function renderTopCustomers() {
+				const orders = read("db_orders", []).filter(function (o) {
+					return o.status !== "Hủy đơn";
+				});
+				const map = {};
+				orders.forEach(function (o) {
+					if (!map[o.customerId]) {
+						map[o.customerId] = {
+							customerId: o.customerId,
+							customerName: o.customerName,
+							total: 0,
+							orders: [],
+						};
+					}
+					map[o.customerId].total += Number(o.total) || 0;
+					map[o.customerId].orders.push(o);
+				});
+				const sorted = Object.values(map)
+					.sort(function (a, b) { return b.total - a.total; })
+					.slice(0, 5);
+
+				const tbody = document.getElementById("admin-stats-tbody");
+				tbody.innerHTML = "";
+				sorted.forEach(function (item, idx) {
+					const orderLinks = item.orders
+						.map(function (o) {
+							return (
+								'<a href="hoa-don/' + o.id + '.html" style="color:var(--primary-color); font-weight:bold; text-decoration:underline;">' +
+								o.id +
+								"</a> (" + formatVND(o.total) + " – " + o.date + ")"
+							);
+						})
+						.join("<br/>");
+					tbody.innerHTML +=
+						"<tr>" +
+						"<td><strong>#" + (idx + 1) + "</strong></td>" +
+						'<td><a href="tai-khoan/' + item.customerId + '.html" style="color:var(--primary-color); font-weight:700; text-decoration:underline;">' + item.customerName + "</a></td>" +
+						"<td>" + orderLinks + "</td>" +
+						'<td style="color:#b48a18; font-weight:800;">' + formatVND(item.total) + "</td>" +
+						"</tr>";
+				});
+			}
+
+			window.onload = function () {
+				mountAdminChrome("stats");
+				renderTopCustomers();
+			};
+		</script>
+	</body>
+</html>

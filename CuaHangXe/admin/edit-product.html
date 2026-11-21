@@ -10,23 +10,7 @@
 			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 	</head>
 	<body>
-		<header>
-			<div class="logo">
-				<i class="fa-solid fa-user-shield"></i> LUXURY <span>ADMIN</span>
-			</div>
-			<nav class="main-nav">
-				<ul class="menu">
-					<li>
-						<a href="admin.html"><i class="fa-solid fa-gauge"></i> QUẢN TRỊ</a>
-					</li>
-					<li>
-						<a href="admin-login.html"
-							><i class="fa-solid fa-right-from-bracket"></i> ĐĂNG XUẤT ADMIN</a
-						>
-					</li>
-				</ul>
-			</nav>
-		</header>
+		<div id="admin-header"></div>
 
 		<main class="container" style="max-width: 820px">
 			<h2 class="section-title">Chỉnh Sửa Thông Tin Sản Phẩm #3</h2>
@@ -65,9 +49,7 @@
 					</div>
 					<div class="form-group">
 						<label for="edit-prod-desc">Mô tả chi tiết:</label>
-						<textarea id="edit-prod-desc" class="form-input" rows="3">
-Siêu bán tải hạng sang, động cơ Bi-Turbo 2.0L, hệ dẫn động 4x4.</textarea
-						>
+						<textarea id="edit-prod-desc" class="form-input" rows="3">Siêu bán tải hạng sang, động cơ Bi-Turbo 2.0L, hệ dẫn động 4x4.</textarea>
 					</div>
 					<div class="form-group">
 						<label for="edit-prod-file"
@@ -94,18 +76,12 @@ Siêu bán tải hạng sang, động cơ Bi-Turbo 2.0L, hệ dẫn động 4x4.
 						</div>
 					</div>
 
-					<div
-						style="
-							display: flex;
-							justify-content: flex-end;
-							gap: 12px;
-							margin-top: 24px;
-						">
+					<div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px">
 						<a
-							href="admin.html"
+							href="admin-products.html"
 							class="btn-change-pass"
 							style="text-decoration: none; display: inline-flex; align-items: center; gap: 7px">
-							<i class="fa-solid fa-arrow-left"></i> Quay lại quản trị
+							<i class="fa-solid fa-arrow-left"></i> Quay lại danh sách
 						</a>
 						<button type="submit" class="btn">
 							<i class="fa-solid fa-floppy-disk"></i> Lưu Cập Nhật
@@ -115,9 +91,9 @@ Siêu bán tải hạng sang, động cơ Bi-Turbo 2.0L, hệ dẫn động 4x4.
 			</div>
 		</main>
 
-		<footer><p>&copy; 2026 LUXURY AUTO - Khu vực quản trị hệ thống</p></footer>
+		<div id="admin-footer"></div>
 
-		<script src="../js/common.js?v=21"></script>
+		<script src="../js/common.js?v=22"></script>
 		<script>
 			function previewEditImage(e) {
 				const file = e.target.files && e.target.files[0];
@@ -136,16 +112,15 @@ Siêu bán tải hạng sang, động cơ Bi-Turbo 2.0L, hệ dẫn động 4x4.
 					"Thông tin phương tiện đã được cập nhật vào danh mục hệ thống.",
 					{
 						type: "success",
-						btnText: "Về trang quản trị",
-						onConfirm: function () {
-							location.href = "admin.html";
-						},
-					},
+						btnText: "Về danh sách sản phẩm",
+						onConfirm: function () { location.href = "admin-products.html"; },
+					}
 				);
 				return false;
 			}
 
 			window.onload = function () {
+				mountAdminChrome("products");
 				const catSelect = document.getElementById("edit-prod-category");
 				fillCategorySelect(catSelect, false);
 				catSelect.value = "Pickup";

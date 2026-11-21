@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="vi">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Quản Lý Tài Khoản User - LUXURY ADMIN</title>
+		<link rel="stylesheet" href="../css/styles.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+		<style>
+			.admin-form-grid {
+				display: grid;
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+				gap: 16px;
+			}
+			.admin-btn-group {
+				display: inline-flex;
+				gap: 6px;
+				flex-wrap: nowrap;
+			}
+			@media (max-width: 720px) {
+				.admin-form-grid { grid-template-columns: 1fr; }
+			}
+		</style>
+	</head>
+	<body>
+		<div id="admin-header"></div>
+
+		<main class="container">
+			<h2 class="section-title">Quản Lý Tài Khoản Khách Hàng</h2>
+
+			<!-- Form thêm tài khoản dành riêng cho Admin (khác giao diện đăng ký khách hàng) -->
+			<div class="cart-box" style="margin-bottom: 34px">
+				<h3><i class="fa-solid fa-user-plus"></i> Tạo Tài Khoản Khách Hàng Mới</h3>
+				<form
+					onsubmit="return handleCreateUser(event);"
+					novalidate
+					style="
+						margin-top: 16px;
+						background: #f8fafc;
+						padding: 20px;
+						border-radius: 10px;
+						border: 1px solid #e2e8f0;
+					">
+					<div class="admin-form-grid">
+						<div class="form-group">
+							<label for="new-user-name">Họ và Tên:</label>
+							<input type="text" id="new-user-name" class="form-input" placeholder="Nhập họ tên khách hàng..." />
+						</div>
+						<div class="form-group">
+							<label for="new-user-email">Email đăng nhập:</label>
+							<input type="email" id="new-user-email" class="form-input" placeholder="khachhang@gmail.com" />
+						</div>
+						<div class="form-group">
+							<label for="new-user-phone">Số điện thoại:</label>
+							<input type="tel" id="new-user-phone" class="form-input" placeholder="0901234567" />
+						</div>
+						<div class="form-group">
+							<label for="new-user-status">Trạng thái ban đầu:</label>
+							<select id="new-user-status" class="form-input">
+								<option value="active">Hoạt động</option>
+								<option value="locked">Tạm khóa</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="new-user-address">Địa chỉ mặc định:</label>
+						<input type="text" id="new-user-address" class="form-input" placeholder="Số nhà, đường, phường/xã, tỉnh/thành phố..." />
+					</div>
+					<button type="submit" class="btn">
+						<i class="fa-solid fa-floppy-disk"></i> Thêm Tài Khoản User
+					</button>
+				</form>
+			</div>
+
+			<!-- Bảng danh sách User -->
+			<div class="cart-box">
+				<h3 style="margin-bottom: 16px"><i class="fa-solid fa-users"></i> Danh Sách Tài Khoản Hệ Thống</h3>
+				<div class="admin-table-container">
+					<table class="admin-table">
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th>Họ Tên (Xem hồ sơ)</th>
+								<th>Email</th>
+								<th>Số Điện Thoại</th>
+								<th>Trạng Thái</th>
+								<th>Thao Tác</th>
+							</tr>
+						</thead>
+						<tbody id="admin-users-tbody"></tbody>
+					</table>
+				</div>
+			</div>
+		</main>
+
+		<div id="admin-footer"></div>
+
+		<script src="../js/common.js?v=22"></script>
+		<script>
+			function handleCreateUser(e) {
+				if (e && e.preventDefault) e.preventDefault();
+				showLuxuryBanner(
+					"Thêm Tài Khoản Thành Công",
+					"Hồ sơ tài khoản khách hàng mới đã được tạo trên hệ thống quản trị.",
+					{
+						type: "success",
+						btnText: "Xác nhận",
+						onConfirm: function () { location.reload(); },
+					}
+				);
+				return false;
+			}
+
+			function handleToggleLock(isLocked, name) {
+				if (isLocked) {
+					showLuxuryBanner(
+						"Mở Khóa Tài Khoản",
+						'Bạn có muốn mở khóa lại tài khoản "' + name + '" để khách hàng đăng nhập bình thường?',
+						{
+							type: "success",
+							cancelText: "Hủy",
+							btnText: "Mở khóa",
+							onConfirm: function () { location.reload(); },
+						}
+					);
+				} else {
+					showLuxuryBanner(
+						"Khóa Tài Khoản Khách Hàng",
+						'Bạn có chắc muốn khóa tài khoản "' + name + '" tạm thời không?',
+						{
+							type: "warning",
+							cancelText: "Hủy",
+							btnText: "Khóa ngay",
+							onConfirm: function () { location.reload(); },
+						}
+					);
+				}
+			}
+
+			function renderAdminUsers() {
+				const users = read("db_users", []);
+				const tbody = document.getElementById("admin-users-tbody");
+				tbody.innerHTML = "";
+				users.forEach(function (u) {
+					const safeName = u.name.replace(/'/g, "\\'");
+					const lockClass = u.isLocked ? "admin-btn-success" : "admin-btn-warn";
+					tbody.innerHTML +=
+						"<tr>" +
+						"<td>#" + u.id + "</td>" +
+						'<td><a href="tai-khoan/' + u.id + '.html" style="color:var(--primary-color); font-weight:bold; text-decoration:underline;">' + u.name + "</a></td>" +
+						"<td>" + u.email + "</td>" +
+						"<td>" + (u.phone || "") + "</td>" +
+						"<td>" + (u.isLocked ? '<span style="color:#dc2626; font-weight:bold;">Đã khóa</span>' : '<span style="color:#16a34a; font-weight:600;">Hoạt động</span>') + "</td>" +
+						'<td><div class="admin-btn-group">' +
+						'<a href="edit-user.html" class="admin-action-btn admin-btn-edit">Sửa</a>' +
+						'<button type="button" class="admin-action-btn ' + lockClass + '" onclick="handleToggleLock(' + u.isLocked + ", '" + safeName + '\')">' + (u.isLocked ? "Mở" : "Khóa") + "</button>" +
+						"</div></td></tr>";
+				});
+			}
+
+			window.onload = function () {
+				mountAdminChrome("users");
+				renderAdminUsers();
+			};
+		</script>
+	</body>
+</html>

@@ -1,4 +1,4 @@
-/* common.js - dữ liệu mẫu tĩnh, header/footer có thanh tìm kiếm, Luxury Banner (không dùng CSDL/Storage) */
+/* common.js - dữ liệu mẫu tĩnh, header/footer khách hàng & admin, Luxury Banner (không dùng CSDL/Storage) */
 function $(id) { return document.getElementById(id); }
 const DATA = {};
 function read(k, d) { return DATA[k] === undefined ? d : JSON.parse(JSON.stringify(DATA[k])); }
@@ -281,6 +281,41 @@ function siteHeaderHtml() {
 		'<a href="' + pageHref("logout.html") + '"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a>' +
 		"</div></li></ul></header>"
 	);
+}
+
+/* ===== HEADER & FOOTER DÙNG CHUNG CHO KHU VỰC ADMIN ===== */
+function adminHeaderHtml(activeKey) {
+	const items = [
+		{ key: "home", href: "admin.html", icon: "fa-gauge-high", label: "Tổng quan" },
+		{ key: "stats", href: "admin-stats.html", icon: "fa-chart-line", label: "Thống kê" },
+		{ key: "users", href: "admin-users.html", icon: "fa-users-gear", label: "Người dùng" },
+		{ key: "products", href: "admin-products.html", icon: "fa-car", label: "Sản phẩm" },
+		{ key: "orders", href: "admin-orders.html", icon: "fa-boxes-packing", label: "Đơn hàng" },
+	];
+	const navLinks = items.map(function (it) {
+		const cls = it.key === activeKey ? ' class="active"' : "";
+		return '<li><a href="' + it.href + '"' + cls + '><i class="fa-solid ' + it.icon + '"></i> ' + it.label + "</a></li>";
+	}).join("");
+	return (
+		"<header>" +
+		'<div class="logo"><a href="admin.html"><i class="fa-solid fa-user-shield"></i> LUXURY <span>ADMIN</span></a></div>' +
+		'<ul class="nav-right-menu">' +
+		navLinks +
+		'<li><a href="../index-guest.html"><i class="fa-solid fa-globe"></i> Trang khách</a></li>' +
+		'<li><a href="admin-login.html" style="border:1px solid rgba(212,175,55,0.45); color:var(--accent-light);"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a></li>' +
+		"</ul></header>"
+	);
+}
+
+function mountAdminChrome(activeKey) {
+	const header = document.getElementById("admin-header");
+	const footer = document.getElementById("admin-footer");
+	if (header) header.innerHTML = adminHeaderHtml(activeKey || "home");
+	if (footer) {
+		footer.innerHTML =
+			'<footer style="background:var(--primary-color);color:#cbd5e1;text-align:center;padding:22px 20px;margin-top:64px;font-size:13.5px;border-top:2px solid rgba(212,175,55,0.35);">' +
+			"<p>&copy; 2026 LUXURY AUTO - Hệ thống quản trị showroom phương tiện cao cấp</p></footer>";
+	}
 }
 
 document.addEventListener("click", function (e) {

@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="vi">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Quản Lý Đơn Hàng - LUXURY ADMIN</title>
+		<link rel="stylesheet" href="../css/styles.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+		<style>
+			.admin-filter-grid {
+				display: grid;
+				grid-template-columns: repeat(3, minmax(0, 1fr));
+				gap: 15px;
+				align-items: end;
+				background: #f8fafc;
+				padding: 18px;
+				border-radius: 10px;
+				border: 1px solid #e2e8f0;
+				margin: 15px 0 24px;
+			}
+			.admin-filter-grid .filter-group {
+				display: flex;
+				flex-direction: column;
+				gap: 6px;
+				min-width: 0;
+			}
+			.admin-filter-grid label {
+				font-size: 12.5px;
+				font-weight: 600;
+				color: var(--primary-color);
+			}
+			.admin-filter-grid .search-input,
+			.admin-filter-grid .search-select {
+				width: 100%;
+				min-width: 0;
+				height: 42px;
+				padding: 0 12px;
+			}
+			@media (max-width: 820px) {
+				.admin-filter-grid { grid-template-columns: 1fr 1fr; }
+			}
+			@media (max-width: 560px) {
+				.admin-filter-grid { grid-template-columns: 1fr; }
+			}
+		</style>
+	</head>
+	<body>
+		<div id="admin-header"></div>
+
+		<main class="container">
+			<h2 class="section-title">Quản Lý Đơn Hàng &amp; Trạng Thái Giao</h2>
+
+			<div class="cart-box">
+				<h3><i class="fa-solid fa-filter"></i> Bộ Lọc Đơn Hàng</h3>
+				<div class="admin-filter-grid">
+					<div class="filter-group">
+						<label for="filter-order-status">Trạng thái đơn:</label>
+						<select id="filter-order-status" class="search-select">
+							<option value="">Tất cả trạng thái</option>
+							<option value="Chưa xác nhận">Chưa xác nhận</option>
+							<option value="Đã xác nhận">Đã xác nhận</option>
+							<option value="Đã giao (Thành công)">Đã giao (Thành công)</option>
+							<option value="Hủy đơn">Hủy đơn</option>
+						</select>
+					</div>
+					<div class="filter-group">
+						<label for="filter-order-from">Từ ngày:</label>
+						<input type="date" id="filter-order-from" class="search-input" />
+					</div>
+					<div class="filter-group">
+						<label for="filter-order-to">Đến ngày:</label>
+						<input type="date" id="filter-order-to" class="search-input" />
+					</div>
+					<div class="filter-group">
+						<label for="filter-order-province">Tỉnh / Thành phố:</label>
+						<select id="filter-order-province" class="search-select"></select>
+					</div>
+					<div class="filter-group">
+						<label for="filter-order-district">Xã / Phường:</label>
+						<select id="filter-order-district" class="search-select"></select>
+					</div>
+					<div class="filter-group">
+						<button
+							type="button"
+							class="btn"
+							style="height: 42px; width: 100%"
+							onclick="showFilterNotice()">
+							<i class="fa-solid fa-magnifying-glass"></i> Lọc Đơn Hàng
+						</button>
+					</div>
+				</div>
+
+				<div class="admin-table-container">
+					<table class="admin-table">
+						<thead>
+							<tr>
+								<th>Mã Đơn</th>
+								<th>Khách Hàng</th>
+								<th>Ngày Đặt</th>
+								<th>Địa Điểm Giao</th>
+								<th>Tổng Tiền</th>
+								<th>Trạng Thái</th>
+								<th>Chuyển Trạng Thái Xuôi</th>
+							</tr>
+						</thead>
+						<tbody id="admin-orders-tbody"></tbody>
+					</table>
+				</div>
+			</div>
+		</main>
+
+		<div id="admin-footer"></div>
+
+		<script src="../js/vietnam-admin.js"></script>
+		<script src="../js/common.js?v=22"></script>
+		<script>
+			function showFilterNotice() {
+				showLuxuryBanner(
+					"Áp Dụng Bộ Lọc",
+					"Đã lọc danh sách đơn hàng theo tiêu chí trạng thái, thời gian và địa điểm giao hàng.",
+					{ type: "info", btnText: "Đóng" }
+				);
+			}
+
+			function handleStatusChange(orderId) {
+				showLuxuryBanner(
+					"Cập Nhật Trạng Thái Đơn",
+					"Đã chuyển trạng thái xuôi chiều cho đơn hàng " + orderId + ".",
+					{
+						type: "success",
+						btnText: "Xác nhận",
+						onConfirm: function () { location.reload(); },
+					}
+				);
+			}
+
+			function renderAdminOrders() {
+				const orders = read("db_orders", []);
+				const tbody = document.getElementById("admin-orders-tbody");
+				tbody.innerHTML = "";
+				orders.forEach(function (o) {
+					const nextStatuses = STATUS_FLOW[o.status] || [];
+					const selectHtml =
+						nextStatuses.length === 0
+							? '<span style="color:#64748b; font-weight:600;">Hoàn tất</span>'
+							: '<select onchange="handleStatusChange(\'' +
+								o.id +
+								'\')" class="search-select" style="height:36px; padding:0 8px;"><option value="">-- Chọn --</option>' +
+								nextStatuses
+									.map(function (s) { return '<option value="' + s + '">' + s + "</option>"; })
+									.join("") +
+								"</select>";
+
+					tbody.innerHTML +=
+						"<tr>" +
+						'<td><a href="hoa-don/' + o.id + '.html" style="color:var(--primary-color); font-weight:bold; text-decoration:underline;">' + o.id + "</a></td>" +
+						'<td><a href="tai-khoan/' + o.customerId + '.html" style="color:var(--primary-color);">' + o.customerName + "</a></td>" +
+						"<td>" + o.date + "</td>" +
+						"<td>" + o.address + "</td>" +
+						'<td style="color:#b48a18; font-weight:bold;">' + formatVND(o.total) + "</td>" +
+						'<td><span class="status-badge confirmed">' + o.status + "</span></td>" +
+						"<td>" + selectHtml + "</td>" +
+						"</tr>";
+				});
+			}
+
+			window.onload = function () {
+				mountAdminChrome("orders");
+				initProvinceAndDistrictSelectors("filter-order-province", "filter-order-district");
+				renderAdminOrders();
+			};
+		</script>
+	</body>
+</html>

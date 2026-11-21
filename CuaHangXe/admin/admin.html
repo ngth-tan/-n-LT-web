@@ -3,569 +3,302 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Quản Trị Web-Admin - LUXURY AUTO</title>
+		<title>Tổng Quan Quản Trị - LUXURY ADMIN</title>
 		<link rel="stylesheet" href="../css/styles.css" />
 		<link
 			rel="stylesheet"
 			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 		<style>
-			.admin-filter-grid {
-				display: grid;
-				gap: 15px;
-				align-items: end;
-				background: #f8fafc;
-				padding: 18px;
-				border-radius: 10px;
-				border: 1px solid #e2e8f0;
-				margin: 15px 0 20px;
+			.admin-hero {
+				background:
+					linear-gradient(100deg, rgba(11, 19, 36, 0.94) 0%, rgba(21, 34, 59, 0.85) 60%, rgba(11, 19, 36, 0.7) 100%),
+					url("https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1600&q=80")
+						center/cover no-repeat;
+				color: #f8fafc;
+				padding: 58px 24px;
+				border-bottom: 2px solid rgba(212, 175, 55, 0.35);
 			}
-			.admin-filter-grid.cols-3 {
-				grid-template-columns: 1fr 1fr auto;
-			}
-			.admin-filter-grid.cols-5 {
-				grid-template-columns: repeat(4, minmax(0, 1fr)) auto;
-			}
-			.admin-filter-grid .filter-group {
+			.admin-hero-inner {
+				max-width: 1220px;
+				margin: 0 auto;
 				display: flex;
-				flex-direction: column;
-				gap: 6px;
-				min-width: 0;
+				align-items: center;
+				justify-content: space-between;
+				gap: 24px;
+				flex-wrap: wrap;
 			}
-			.admin-filter-grid label {
+			.admin-hero h1 {
+				font-size: 34px;
+				font-weight: 800;
+				text-transform: uppercase;
+				letter-spacing: 1px;
+				margin-bottom: 10px;
+			}
+			.admin-hero h1 span {
+				color: var(--accent-color);
+			}
+			.admin-hero p {
+				color: #cbd5e1;
+				max-width: 580px;
+				font-size: 15px;
+			}
+			.kpi-grid {
+				display: grid;
+				grid-template-columns: repeat(4, minmax(0, 1fr));
+				gap: 22px;
+				margin-bottom: 44px;
+			}
+			.kpi-card {
+				background: #ffffff;
+				border: 1px solid var(--border-soft);
+				border-radius: 14px;
+				padding: 24px;
+				box-shadow: var(--shadow-card);
+				display: flex;
+				align-items: center;
+				gap: 16px;
+			}
+			.kpi-icon {
+				width: 54px;
+				height: 54px;
+				border-radius: 12px;
+				background: linear-gradient(135deg, #0b1324, #1b2d4e);
+				color: var(--accent-color);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 22px;
+				flex-shrink: 0;
+				border: 1px solid rgba(212, 175, 55, 0.4);
+			}
+			.kpi-label {
 				font-size: 12.5px;
 				font-weight: 600;
+				color: var(--text-muted);
+				text-transform: uppercase;
+				letter-spacing: 0.5px;
+			}
+			.kpi-value {
+				font-size: 21px;
+				font-weight: 800;
+				color: var(--primary-color);
+				margin-top: 2px;
+			}
+			.module-grid {
+				display: grid;
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+				gap: 26px;
+			}
+			.module-card {
+				background: #ffffff;
+				border: 1px solid var(--border-soft);
+				border-radius: 16px;
+				padding: 28px;
+				box-shadow: var(--shadow-card);
+				transition: var(--transition);
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+				gap: 18px;
+			}
+			.module-card:hover {
+				transform: translateY(-5px);
+				box-shadow: var(--shadow-hover);
+				border-color: rgba(212, 175, 55, 0.55);
+			}
+			.module-head {
+				display: flex;
+				align-items: center;
+				gap: 14px;
+			}
+			.module-badge {
+				width: 48px;
+				height: 48px;
+				border-radius: 50%;
+				background: rgba(212, 175, 55, 0.14);
+				border: 1.5px solid var(--accent-color);
+				color: #b48a18;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 19px;
+			}
+			.module-card h3 {
+				font-size: 19px;
+				font-weight: 800;
 				color: var(--primary-color);
 			}
-			.admin-filter-grid .search-input,
-			.admin-filter-grid .search-select {
-				width: 100%;
-				min-width: 0;
-				height: 42px;
-				padding: 0 12px;
-				margin: 0;
+			.module-card p {
+				font-size: 14px;
+				color: #475569;
+				line-height: 1.65;
 			}
-			.admin-btn-group {
-				display: inline-flex;
-				gap: 6px;
-				flex-wrap: nowrap;
+			.module-actions {
+				display: flex;
+				gap: 10px;
+				flex-wrap: wrap;
 			}
-			@media (max-width: 900px) {
-				.admin-filter-grid.cols-5 {
-					grid-template-columns: 1fr 1fr;
-				}
+			@media (max-width: 992px) {
+				.kpi-grid { grid-template-columns: repeat(2, 1fr); }
 			}
-			@media (max-width: 600px) {
-				.admin-filter-grid.cols-3,
-				.admin-filter-grid.cols-5 {
-					grid-template-columns: 1fr;
-				}
+			@media (max-width: 680px) {
+				.kpi-grid, .module-grid { grid-template-columns: 1fr; }
+				.admin-hero h1 { font-size: 25px; }
 			}
 		</style>
 	</head>
 	<body>
-		<header>
-			<div class="logo">
-				<i class="fa-solid fa-user-shield"></i> LUXURY <span>ADMIN</span>
+		<div id="admin-header"></div>
+
+		<section class="admin-hero">
+			<div class="admin-hero-inner">
+				<div>
+					<div class="hero-badge">
+						<i class="fa-solid fa-shield-halved"></i> Trung Tâm Điều Hành 2026
+					</div>
+					<h1>Quản Trị <span>LUXURY AUTO</span></h1>
+					<p>
+						Chọn từng phân hệ quản trị chuyên biệt bên dưới để theo dõi doanh thu,
+						quản lý khách hàng, kho phương tiện và trạng thái đơn hàng.
+					</p>
+				</div>
+				<a href="add-product.html" class="btn">
+					<i class="fa-solid fa-circle-plus"></i> Thêm Sản Phẩm Mới
+				</a>
 			</div>
-			<nav class="main-nav">
-				<ul class="menu">
-					<li>
-						<a href="admin-login.html"
-							><i class="fa-solid fa-right-from-bracket"></i> ĐĂNG XUẤT ADMIN</a
-						>
-					</li>
-					<li>
-						<a href="../index-guest.html"
-							><i class="fa-solid fa-globe"></i> VỀ TRANG CHỦ</a
-						>
-					</li>
-				</ul>
-			</nav>
-		</header>
+		</section>
 
 		<main class="container">
-			<h2 class="section-title">Khu Vực Quản Trị Hệ Thống Web-Admin</h2>
-
-			<!-- A. Thống kê top 5 khách hàng mua cao nhất -->
-			<div class="cart-box" style="margin-bottom: 40px">
-				<h3>
-					<i class="fa-solid fa-chart-line"></i> Thống Kê Top 5 Khách Hàng Mua
-					Hàng Cao Nhất
-				</h3>
-				<div class="admin-filter-grid cols-3">
-					<div class="filter-group">
-						<label for="stat-from">Từ ngày:</label>
-						<input
-							type="date"
-							id="stat-from"
-							class="search-input"
-							value="2026-01-01" />
-					</div>
-					<div class="filter-group">
-						<label for="stat-to">Đến ngày:</label>
-						<input
-							type="date"
-							id="stat-to"
-							class="search-input"
-							value="2026-12-31" />
-					</div>
-					<div class="filter-group">
-						<button
-							type="button"
-							class="btn"
-							style="height: 42px; padding: 0 22px; white-space: nowrap"
-							onclick="return backToAdmin(event, 'Đã cập nhật bảng thống kê Top 5 khách hàng theo khoảng thời gian đã chọn.', 'info');">
-							<i class="fa-solid fa-filter"></i> Xem Thống Kê
-						</button>
+			<div class="kpi-grid">
+				<div class="kpi-card">
+					<div class="kpi-icon"><i class="fa-solid fa-sack-dollar"></i></div>
+					<div>
+						<div class="kpi-label">Tổng Doanh Thu</div>
+						<div class="kpi-value" id="kpi-revenue">0 ₫</div>
 					</div>
 				</div>
-				<div class="admin-table-container">
-					<table class="admin-table">
-						<thead>
-							<tr>
-								<th>Hạng</th>
-								<th>Họ Tên Khách Hàng</th>
-								<th>Các Đơn Hàng (Link xem hóa đơn)</th>
-								<th>Tổng Tiền Mua</th>
-							</tr>
-						</thead>
-						<tbody id="admin-stats-tbody"></tbody>
-					</table>
+				<div class="kpi-card">
+					<div class="kpi-icon"><i class="fa-solid fa-boxes-packing"></i></div>
+					<div>
+						<div class="kpi-label">Đơn Hàng</div>
+						<div class="kpi-value" id="kpi-orders">0</div>
+					</div>
+				</div>
+				<div class="kpi-card">
+					<div class="kpi-icon"><i class="fa-solid fa-car-side"></i></div>
+					<div>
+						<div class="kpi-label">Phương Tiện &amp; Phụ Kiện</div>
+						<div class="kpi-value" id="kpi-products">0</div>
+					</div>
+				</div>
+				<div class="kpi-card">
+					<div class="kpi-icon"><i class="fa-solid fa-users"></i></div>
+					<div>
+						<div class="kpi-label">Tài Khoản Khách</div>
+						<div class="kpi-value" id="kpi-users">0</div>
+					</div>
 				</div>
 			</div>
 
-			<!-- B. Quản lý tài khoản User -->
-			<div class="cart-box" style="margin-bottom: 40px">
-				<h3><i class="fa-solid fa-users-gear"></i> Quản Lý Tài Khoản User</h3>
-				<form
-					action="admin.html"
-					onsubmit="return backToAdmin(event, 'Đã lưu thông tin tài khoản khách hàng.');"
-					novalidate
-					style="
-						margin-top: 15px;
-						margin-bottom: 25px;
-						background: #f8fafc;
-						padding: 18px;
-						border-radius: 10px;
-						border: 1px solid #e2e8f0;
-					">
-					<input type="hidden" id="admin-user-id" value="" />
-					<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px">
-						<div class="form-group">
-							<label>Họ và Tên:</label>
-							<input
-								type="text"
-								id="admin-user-name"
-								class="form-input"
-								placeholder="Nhập họ tên..." />
+			<h2 class="section-title">Các Phân Hệ Quản Trị</h2>
+			<div class="module-grid">
+				<div class="module-card">
+					<div>
+						<div class="module-head">
+							<div class="module-badge"><i class="fa-solid fa-chart-line"></i></div>
+							<h3>Thống Kê Top 5 Khách Hàng</h3>
 						</div>
-						<div class="form-group">
-							<label>Email:</label>
-							<input
-								type="email"
-								id="admin-user-email"
-								class="form-input"
-								placeholder="Nhập email..." />
+						<p style="margin-top: 12px">
+							Lọc doanh số theo khoảng thời gian, xếp hạng giảm dần theo tổng giá
+							trị mua hàng và mở trực tiếp trang hóa đơn chi tiết từng đơn.
+						</p>
+					</div>
+					<div class="module-actions">
+						<a href="admin-stats.html" class="btn">
+							<i class="fa-solid fa-arrow-right"></i> Mở Trang Thống Kê
+						</a>
+					</div>
+				</div>
+
+				<div class="module-card">
+					<div>
+						<div class="module-head">
+							<div class="module-badge"><i class="fa-solid fa-users-gear"></i></div>
+							<h3>Quản Lý Tài Khoản User</h3>
 						</div>
+						<p style="margin-top: 12px">
+							Thêm mới tài khoản khách hàng, chỉnh sửa thông tin hồ sơ trên trang
+							riêng, xem lịch sử hóa đơn và thao tác khóa hoặc mở khóa tài khoản.
+						</p>
 					</div>
-					<button
-						type="button"
-						class="btn"
-						style="padding: 10px 20px; font-size: 13px"
-						onclick="return backToAdmin(event, 'Đã lưu thông tin tài khoản khách hàng.');">
-						<i class="fa-solid fa-floppy-disk"></i> Lưu User
-					</button>
-				</form>
-				<div class="admin-table-container">
-					<table class="admin-table">
-						<thead>
-							<tr>
-								<th>ID</th>
-								<th>Họ Tên</th>
-								<th>Email</th>
-								<th>Trạng Thái</th>
-								<th>Thao Tác</th>
-							</tr>
-						</thead>
-						<tbody id="admin-users-tbody"></tbody>
-					</table>
-				</div>
-			</div>
-
-			<!-- C. Quản lý sản phẩm -->
-			<div class="cart-box" style="margin-bottom: 40px">
-				<h3 id="admin-prod-form-title">
-					<i class="fa-solid fa-circle-plus"></i> Thêm Sản Phẩm Mới
-				</h3>
-				<form
-					action="admin.html"
-					onsubmit="return backToAdmin(event, 'Đã thêm sản phẩm mới vào danh mục.');"
-					novalidate
-					style="margin-top: 15px">
-					<input type="hidden" id="admin-prod-id" value="" />
-					<div class="form-group">
-						<label>Tên phương tiện:</label>
-						<input
-							type="text"
-							id="admin-prod-name"
-							class="form-input"
-							placeholder="Nhập tên xe..." />
-					</div>
-					<div class="form-group">
-						<label>Phân loại:</label>
-						<select id="admin-prod-category" class="form-input"></select>
-					</div>
-					<div class="form-group">
-						<label>Giá bán (VNĐ):</label>
-						<input
-							type="text"
-							id="admin-prod-price"
-							class="form-input"
-							placeholder="Nhập giá..." />
-					</div>
-					<div class="form-group">
-						<label>Số lượng:</label>
-						<input
-							type="number"
-							id="admin-prod-qty"
-							class="form-input"
-							min="0"
-							placeholder="Nhập số lượng..." />
-					</div>
-					<div class="form-group">
-						<label>Mô tả chi tiết:</label>
-						<textarea
-							id="admin-prod-desc"
-							class="form-input"
-							rows="2"
-							placeholder="Nhập thông số động cơ..."></textarea>
-					</div>
-					<div class="form-group">
-						<label>Hình ảnh (Tải lên - hiển thị trước khi thêm):</label>
-						<input
-							type="file"
-							id="admin-prod-file"
-							accept="image/*"
-							class="form-input"
-							onchange="previewProductImage(event)" />
-						<img
-							id="admin-prod-preview"
-							src=""
-							alt="Xem trước hình ảnh"
-							style="
-								max-height: 150px;
-								display: none;
-								margin-top: 10px;
-								border-radius: 8px;
-								border: 1px solid #cbd5e1;
-							" />
-					</div>
-					<button
-						type="button"
-						class="btn"
-						onclick="return backToAdmin(event, 'Đã lưu thông tin sản phẩm vào danh mục.');">
-						<i class="fa-solid fa-floppy-disk"></i> Lưu Sản Phẩm
-					</button>
-				</form>
-
-				<h3 style="margin-top: 35px">
-					<i class="fa-solid fa-list-check"></i> Danh Sách Sản Phẩm
-				</h3>
-				<div class="admin-table-container" style="margin-top: 15px">
-					<table class="admin-table">
-						<thead>
-							<tr>
-								<th>ID</th>
-								<th>Hình</th>
-								<th>Tên Xe</th>
-								<th>Phân Loại</th>
-								<th>Giá</th>
-								<th>Số lượng</th>
-								<th>Tình Trạng</th>
-								<th>Thao Tác</th>
-							</tr>
-						</thead>
-						<tbody id="admin-products-tbody"></tbody>
-					</table>
-				</div>
-			</div>
-
-			<!-- D. Quản lý đơn hàng -->
-			<div class="cart-box">
-				<h3>
-					<i class="fa-solid fa-boxes-packing"></i> Quản Lý Đơn Hàng (Bộ Lọc
-					&amp; Trạng Thái Xuôi Chiều)
-				</h3>
-				<div class="admin-filter-grid cols-5">
-					<div class="filter-group">
-						<label for="filter-order-status">Trạng thái đơn:</label>
-						<select id="filter-order-status" class="search-select">
-							<option value="">Tất cả trạng thái</option>
-							<option value="Chưa xác nhận">Chưa xác nhận</option>
-							<option value="Đã xác nhận">Đã xác nhận</option>
-							<option value="Đã giao (Thành công)">Đã giao (Thành công)</option>
-							<option value="Hủy đơn">Hủy đơn</option>
-						</select>
-					</div>
-					<div class="filter-group">
-						<label for="filter-order-from">Từ ngày:</label>
-						<input type="date" id="filter-order-from" class="search-input" />
-					</div>
-					<div class="filter-group">
-						<label for="filter-order-to">Đến ngày:</label>
-						<input type="date" id="filter-order-to" class="search-input" />
-					</div>
-					<div class="filter-group">
-						<label for="filter-order-district">Khu vực giao:</label>
-						<select id="filter-order-district" class="search-select">
-							<option value="">Tất cả tỉnh / thành</option>
-						</select>
-					</div>
-					<div class="filter-group">
-						<button
-							type="button"
-							class="btn"
-							style="height: 42px; padding: 0 22px; white-space: nowrap"
-							onclick="return backToAdmin(event, 'Đã áp dụng bộ lọc danh sách đơn hàng.', 'info');">
-							<i class="fa-solid fa-filter"></i> Lọc
-						</button>
+					<div class="module-actions">
+						<a href="admin-users.html" class="btn">
+							<i class="fa-solid fa-arrow-right"></i> Mở Quản Lý User
+						</a>
+						<a href="edit-user.html" class="btn-view-all">
+							<i class="fa-solid fa-pen"></i> Sửa User Mẫu
+						</a>
 					</div>
 				</div>
-				<div class="admin-table-container">
-					<table class="admin-table">
-						<thead>
-							<tr>
-								<th>Mã Đơn</th>
-								<th>Khách Hàng</th>
-								<th>Ngày</th>
-								<th>Khu Vực</th>
-								<th>Tổng Tiền</th>
-								<th>Trạng Thái</th>
-								<th>Chuyển Trạng Thái Xuôi</th>
-							</tr>
-						</thead>
-						<tbody id="admin-orders-tbody"></tbody>
-					</table>
+
+				<div class="module-card">
+					<div>
+						<div class="module-head">
+							<div class="module-badge"><i class="fa-solid fa-car"></i></div>
+							<h3>Quản Lý Sản Phẩm</h3>
+						</div>
+						<p style="margin-top: 12px">
+							Quản lý danh mục xe theo phân loại, thêm mới kèm xem trước ảnh tải
+							lên, chỉnh sửa thông tin hiện tại và ẩn hoặc xóa sản phẩm theo trạng thái bán.
+						</p>
+					</div>
+					<div class="module-actions">
+						<a href="admin-products.html" class="btn">
+							<i class="fa-solid fa-arrow-right"></i> Danh Sách Sản Phẩm
+						</a>
+						<a href="add-product.html" class="btn-view-all">
+							<i class="fa-solid fa-plus"></i> Thêm Mới
+						</a>
+					</div>
+				</div>
+
+				<div class="module-card">
+					<div>
+						<div class="module-head">
+							<div class="module-badge"><i class="fa-solid fa-boxes-packing"></i></div>
+							<h3>Quản Lý Đơn Hàng</h3>
+						</div>
+						<p style="margin-top: 12px">
+							Lọc đơn hàng theo trạng thái, khoảng ngày đặt và địa điểm giao hàng;
+							chuyển trạng thái xuôi chiều và mở trang hóa đơn điện tử riêng.
+						</p>
+					</div>
+					<div class="module-actions">
+						<a href="admin-orders.html" class="btn">
+							<i class="fa-solid fa-arrow-right"></i> Mở Quản Lý Đơn Hàng
+						</a>
+					</div>
 				</div>
 			</div>
 		</main>
 
-		<footer><p>&copy; 2026 LUXURY AUTO - Khu vực quản trị hệ thống</p></footer>
+		<div id="admin-footer"></div>
 
-		<script src="../js/vietnam-admin.js"></script>
-		<script src="../js/common.js?v=21"></script>
+		<script src="../js/common.js?v=22"></script>
 		<script>
-			function backToAdmin(e, msg, type) {
-				if (e && e.preventDefault) e.preventDefault();
-				showLuxuryBanner(
-					"Thao Tác Quản Trị",
-					msg || "Yêu cầu quản trị hệ thống đã được ghi nhận.",
-					{
-						type: type || "success",
-						btnText: "Xác nhận",
-						onConfirm: function () {
-							const onAdmin = /\/admin\/admin\.html$/i.test(
-								String(location.pathname || "").replace(/\\/g, "/"),
-							);
-							if (onAdmin) location.reload();
-							else location.href = "admin.html";
-						},
-					},
-				);
-				return false;
-			}
-
-			function handleDeleteProduct(e, isSold, name) {
-				if (e && e.preventDefault) e.preventDefault();
-				if (isSold) {
-					showLuxuryBanner(
-						"Ẩn Sản Phẩm Đã Bán",
-						'Sản phẩm "' + name + '" đã được bán ra nên hệ thống sẽ ẩn khỏi trang khách hàng thay vì xóa vĩnh viễn.',
-						{
-							type: "info",
-							btnText: "Đã hiểu",
-							onConfirm: function () { location.reload(); },
-						},
-					);
-				} else {
-					showLuxuryBanner(
-						"Xác Nhận Xóa Sản Phẩm",
-						'Sản phẩm "' + name + '" chưa được bán ra. Bạn có chắc chắn muốn xóa khỏi danh sách không?',
-						{
-							type: "warning",
-							cancelText: "Hủy",
-							btnText: "Xóa ngay",
-							onConfirm: function () { location.reload(); },
-						},
-					);
-				}
-				return false;
-			}
-
-			function previewProductImage(e) {
-				const file = e.target.files && e.target.files[0];
-				if (!file) return;
-				const reader = new FileReader();
-				reader.onload = function (evt) {
-					const img = document.getElementById("admin-prod-preview");
-					img.src = evt.target.result;
-					img.style.display = "block";
-				};
-				reader.readAsDataURL(file);
-			}
-
-			function renderAdminUsers() {
-				const users = read("db_users", []);
-				const tbody = document.getElementById("admin-users-tbody");
-				tbody.innerHTML = "";
-				users.forEach((u) => {
-					const lockMsg = u.isLocked
-						? "Đã mở khóa tài khoản khách hàng."
-						: "Đã khóa tài khoản khách hàng.";
-					const lockClass = u.isLocked ? "admin-btn-success" : "admin-btn-warn";
-					tbody.innerHTML += `
-						<tr>
-							<td>#${u.id}</td>
-							<td><a href="tai-khoan/${u.id}.html" style="color:var(--primary-color); font-weight:bold; text-decoration:underline;">${u.name}</a></td>
-							<td>${u.email}</td>
-							<td>${u.isLocked ? '<span style="color:#dc2626; font-weight:bold;">Đã khóa</span>' : '<span style="color:#16a34a; font-weight:600;">Hoạt động</span>'}</td>
-							<td>
-								<div class="admin-btn-group">
-									<button type="button" class="admin-action-btn admin-btn-edit" onclick="return backToAdmin(event, 'Đã chọn chỉnh sửa thông tin tài khoản #${u.id}.', 'info')">Sửa</button>
-									<button type="button" class="admin-action-btn ${lockClass}" onclick="return backToAdmin(event, '${lockMsg}', '${u.isLocked ? "success" : "warning"}')">${u.isLocked ? "Mở" : "Khóa"}</button>
-								</div>
-							</td>
-						</tr>
-					`;
-				});
-			}
-
-			function renderAdminProducts() {
-				const products = read("db_products", []);
-				const tbody = document.getElementById("admin-products-tbody");
-				tbody.innerHTML = "";
-				products.forEach((p) => {
-					const safeName = p.name.replace(/'/g, "\\'");
-					tbody.innerHTML += `
-						<tr style="${p.hidden ? "opacity:0.55; background:#f1f5f9;" : ""}">
-							<td>#${p.id}</td>
-							<td><img src="${p.img}" width="50" height="34" style="object-fit:cover; border-radius:5px;" /></td>
-							<td><strong>${p.name}</strong> ${p.hidden ? '<span style="color:#dc2626; font-size:11.5px; font-weight:700;">(Đã ẩn)</span>' : ""}</td>
-							<td>${p.category}</td>
-							<td style="color:#b48a18; font-weight:700;">${formatVND(p.price)}</td>
-							<td>${productQty(p) > 0 ? productQty(p) : "Đã hết hàng"}</td>
-							<td>${p.isSold ? '<span style="color:#16a34a; font-weight:bold;">Đã bán</span>' : "Chưa bán"}</td>
-							<td>
-								<div class="admin-btn-group">
-									<a href="edit-product.html" class="admin-action-btn admin-btn-edit">Sửa</a>
-									<button type="button" class="admin-action-btn admin-btn-danger" onclick="return handleDeleteProduct(event, ${p.isSold}, '${safeName}')">Xóa</button>
-								</div>
-							</td>
-						</tr>
-					`;
-				});
-			}
-
-			const statusFlow = {
-				"Chưa xác nhận": ["Đã xác nhận", "Hủy đơn"],
-				"Đã xác nhận": ["Đã giao (Thành công)", "Hủy đơn"],
-				"Đã giao (Thành công)": [],
-				"Hủy đơn": [],
-			};
-
-			function renderAdminOrders() {
-				const orders = read("db_orders", []);
-				const tbody = document.getElementById("admin-orders-tbody");
-				tbody.innerHTML = "";
-				if (orders.length === 0) {
-					tbody.innerHTML =
-						'<tr><td colspan="7" style="text-align:center;">Không có đơn hàng nào.</td></tr>';
-					return;
-				}
-				orders.forEach((o) => {
-					const nextStatuses = statusFlow[o.status] || [];
-					const selectHtml =
-						nextStatuses.length === 0
-							? '<span style="color:#64748b; font-weight:600;">Hoàn tất</span>'
-							: `<select onchange="return backToAdmin(event, 'Đã chuyển trạng thái xuôi cho đơn hàng ${o.id}.', 'success')" class="search-select" style="height:36px; padding:0 8px;"><option value="">-- Chọn --</option>${nextStatuses.map((s) => `<option value="${s}">${s}</option>`).join("")}</select>`;
-
-					tbody.innerHTML += `
-						<tr>
-							<td><a href="hoa-don/${o.id}.html" style="color:var(--primary-color); font-weight:bold; text-decoration:underline;">${o.id}</a></td>
-							<td><a href="tai-khoan/${o.customerId}.html" style="color:var(--primary-color);">${o.customerName}</a></td>
-							<td>${o.date}</td>
-							<td>${o.address}</td>
-							<td style="color:#b48a18; font-weight:bold;">${formatVND(o.total)}</td>
-							<td><span class="status-badge confirmed">${o.status}</span></td>
-							<td>${selectHtml}</td>
-						</tr>
-					`;
-				});
-			}
-
-			function renderTopCustomers() {
-				const orders = read("db_orders", []).filter(
-					(o) => o.status !== "Hủy đơn",
-				);
-				const map = {};
-				orders.forEach((o) => {
-					if (!map[o.customerName]) {
-						map[o.customerName] = {
-							customerName: o.customerName,
-							total: 0,
-							orders: [],
-						};
-					}
-					map[o.customerName].total += o.total;
-					map[o.customerName].orders.push(o);
-				});
-				const sorted = Object.values(map)
-					.sort((a, b) => b.total - a.total)
-					.slice(0, 5);
-				const tbody = document.getElementById("admin-stats-tbody");
-				tbody.innerHTML = "";
-				if (sorted.length === 0) {
-					tbody.innerHTML =
-						'<tr><td colspan="4" style="text-align:center;">Chưa có dữ liệu thống kê.</td></tr>';
-					return;
-				}
-				sorted.forEach((item, idx) => {
-					const orderLinks = item.orders
-						.map(
-							(o) =>
-								`<a href="hoa-don/${o.id}.html" style="color:var(--primary-color); font-weight:bold; text-decoration:underline;">${o.id}</a> (${formatVND(o.total)})`,
-						)
-						.join("<br/>");
-					tbody.innerHTML += `
-						<tr>
-							<td><strong>#${idx + 1}</strong></td>
-							<td><strong>${item.customerName}</strong></td>
-							<td>${orderLinks}</td>
-							<td style="color:#b48a18; font-weight:bold;">${formatVND(item.total)}</td>
-						</tr>
-					`;
-				});
-			}
-
 			window.onload = function () {
-				const area = document.getElementById("filter-order-district");
-				Object.keys(window.vietnamData || {}).forEach(function (p) {
-					area.innerHTML +=
-						'<option value="' +
-						p.replace(/"/g, "&quot;") +
-						'">' +
-						p +
-						"</option>";
-				});
-				fillCategorySelect(
-					document.getElementById("admin-prod-category"),
-					false,
-				);
-				renderAdminUsers();
-				renderAdminProducts();
-				renderAdminOrders();
-				renderTopCustomers();
-				setupNumberFormatter(document.getElementById("admin-prod-price"));
+				mountAdminChrome("home");
+				const orders = read("db_orders", []);
+				const products = read("db_products", []);
+				const users = read("db_users", []);
+				const revenue = orders
+					.filter(function (o) { return o.status !== "Hủy đơn"; })
+					.reduce(function (sum, o) { return sum + (Number(o.total) || 0); }, 0);
+
+				document.getElementById("kpi-revenue").textContent = formatVND(revenue);
+				document.getElementById("kpi-orders").textContent = orders.length + " đơn";
+				document.getElementById("kpi-products").textContent = products.length + " mẫu";
+				document.getElementById("kpi-users").textContent = users.length + " tài khoản";
 			};
 		</script>
 	</body>
