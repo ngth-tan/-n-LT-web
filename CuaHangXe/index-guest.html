@@ -32,7 +32,11 @@
 			}
 			.btn-nav-register {
 				padding: 8px 16px;
-				background: linear-gradient(135deg, var(--accent-light), var(--accent-color));
+				background: linear-gradient(
+					135deg,
+					var(--accent-light),
+					var(--accent-color)
+				);
 				color: var(--primary-color) !important;
 				border-radius: 8px;
 				font-size: 12px;
@@ -104,7 +108,7 @@
 			<div
 				class="hero-slide active"
 				style="
-					background-image: url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1920&q=80');
+					background-image: url(&quot;https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1920&q=80&quot;);
 				">
 				<div class="hero-slide-inner">
 					<div class="hero-badge">
@@ -124,7 +128,7 @@
 			<div
 				class="hero-slide"
 				style="
-					background-image: url('https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1920&q=80');
+					background-image: url(&quot;https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1920&q=80&quot;);
 				">
 				<div class="hero-slide-inner">
 					<div class="hero-badge">
@@ -144,7 +148,7 @@
 			<div
 				class="hero-slide"
 				style="
-					background-image: url('https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=1920&q=80');
+					background-image: url(&quot;https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=1920&q=80&quot;);
 				">
 				<div class="hero-slide-inner">
 					<div class="hero-badge">
@@ -164,7 +168,7 @@
 			<div
 				class="hero-slide"
 				style="
-					background-image: url('https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=1920&q=80');
+					background-image: url(&quot;https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=1920&q=80&quot;);
 				">
 				<div class="hero-slide-inner">
 					<div class="hero-badge">
@@ -247,7 +251,9 @@
 					dot.type = "button";
 					dot.className = "hero-dot" + (idx === 0 ? " active" : "");
 					dot.setAttribute("aria-label", "Chuyển đến ảnh " + (idx + 1));
-					dot.onclick = function () { goHeroSlide(idx); };
+					dot.onclick = function () {
+						goHeroSlide(idx);
+					};
 					dotsWrap.appendChild(dot);
 				});
 
@@ -262,13 +268,29 @@
 				const dots = document.querySelectorAll("#hero-dots .hero-dot");
 				if (!slides.length) return;
 				heroIndex = (idx + slides.length) % slides.length;
-				slides.forEach(function (s, i) { s.classList.toggle("active", i === heroIndex); });
-				dots.forEach(function (d, i) { d.classList.toggle("active", i === heroIndex); });
+				slides.forEach(function (s, i) {
+					s.classList.toggle("active", i === heroIndex);
+				});
+				dots.forEach(function (d, i) {
+					d.classList.toggle("active", i === heroIndex);
+				});
 			}
 
-			function moveHeroSlide(step) { goHeroSlide(heroIndex + step); }
-			function startHeroAuto() { stopHeroAuto(); heroTimer = setInterval(function () { moveHeroSlide(1); }, 4500); }
-			function stopHeroAuto() { if (heroTimer) { clearInterval(heroTimer); heroTimer = null; } }
+			function moveHeroSlide(step) {
+				goHeroSlide(heroIndex + step);
+			}
+			function startHeroAuto() {
+				stopHeroAuto();
+				heroTimer = setInterval(function () {
+					moveHeroSlide(1);
+				}, 4500);
+			}
+			function stopHeroAuto() {
+				if (heroTimer) {
+					clearInterval(heroTimer);
+					heroTimer = null;
+				}
+			}
 
 			function scrollProductCarousel(direction) {
 				const track = document.getElementById("home-product-grid");
@@ -285,8 +307,10 @@
 					{
 						type: "info",
 						btnText: "Đăng nhập ngay",
-						onConfirm: function () { location.href = "pages/login.html?next=cart"; },
-					}
+						onConfirm: function () {
+							location.href = "pages/login.html?next=cart";
+						},
+					},
 				);
 			}
 
@@ -295,11 +319,16 @@
 				const topIds = [3, 4, 5, 6, 15, 14, 13];
 				const all = visibleProducts();
 				const products = topIds
-					.map(function (id) { return all.find(function (p) { return p.id === id; }); })
+					.map(function (id) {
+						return all.find(function (p) {
+							return p.id === id;
+						});
+					})
 					.filter(Boolean);
 
 				if (!products.length) {
-					grid.innerHTML = '<p style="width:100%;text-align:center;color:#64748b;">Chưa có sản phẩm.</p>';
+					grid.innerHTML =
+						'<p style="width:100%;text-align:center;color:#64748b;">Chưa có sản phẩm.</p>';
 					return;
 				}
 				grid.innerHTML = "";
@@ -311,22 +340,44 @@
 
 					grid.innerHTML +=
 						'<div class="car-card">' +
-						'<a href="' + detailHref(p.id) + '"><img src="' + p.img + '" alt="' + p.name + '" class="car-img" /></a>' +
+						'<a href="' +
+						detailHref(p.id) +
+						'"><img src="' +
+						p.img +
+						'" alt="' +
+						p.name +
+						'" class="car-img" /></a>' +
 						'<div class="car-info">' +
-						'<div class="car-category">' + p.category + "</div>" +
-						'<h3 class="car-title"><a href="' + detailHref(p.id) + '">' + p.name + "</a> " + sold + "</h3>" +
-						'<div class="car-price">' + formatVND(p.price) + "</div>" +
-						'<div class="car-qty">' + productQtyLabel(p) + "</div>" +
-						'<div class="card-actions">' +
-						'<a class="card-btn" href="' + detailHref(p.id) + '"><i class="fa-solid fa-eye"></i> Chi tiết</a>' +
-						buyBtn +
-						"</div></div></div>";
+						'<div class="car-category">' +
+						p.category +
+						"</div>" +
+						'<h3 class="car-title"><a href="' +
+						detailHref(p.id) +
+						'">' +
+						p.name +
+						"</a> " +
+						sold +
+						"</h3>" +
+						'<div class="car-price">' +
+						formatVND(p.price) +
+						"</div>" +
+						'<div class="car-qty">' +
+						productQtyLabel(p) +
+						"</div>" +
+						// '<div class="card-actions">' +
+						// '<a class="card-btn" href="' + detailHref(p.id) + '"><i class="fa-solid fa-eye"></i> Chi tiết</a>' +
+						// buyBtn
+						// +
+						// "</div>"
+						"</div>";
+					("</div>");
 				});
 			}
 
 			(function () {
 				const footer = document.getElementById("site-footer");
-				if (footer && typeof siteFooterHtml === "function") footer.innerHTML = siteFooterHtml();
+				if (footer && typeof siteFooterHtml === "function")
+					footer.innerHTML = siteFooterHtml();
 				initHeroSlider();
 				renderHomeProducts();
 			})();
